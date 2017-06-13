@@ -1,0 +1,2 @@
+// Avoid to overload the repository with downloadable JARs
+*.jar
