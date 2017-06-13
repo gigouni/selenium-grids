@@ -22,7 +22,7 @@ When you don't know something, your objectives can be related to questions
 * How produce tests on Android emulator through Appium and how use the grid related to it?
 * How use the grids with iOS?
 * How much resources does it consume?
-* How much computes/machines are necessary to run it?
+* How much computers/machines are necessary to run it?
 
 The support should be resolved for
 
@@ -60,6 +60,12 @@ If it's displaying _'INFO - Selenium Grid hub is up and running'_, your server s
 
 * 
 
+## Change logs
+
+Check the [CHANGELOG.md](./CHANGELOG.md)
+
 ## 1.5. References
 
 * [Selenium grid for Appium mobile automation](http://www.vimalselvam.com/2016/05/15/selenium-grid-for-appium-mobile-automation/)
+* [Running selenium functional tests in webdriver.io against selenium grid setup guide](https://medium.com/@dbillinghamuk/running-selenium-functional-tests-in-webdriver-io-against-selenium-grid-setup-guide-aabbfda9c05d)
+* [Selenium grid for RC and WebDriver](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
