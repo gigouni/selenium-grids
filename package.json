@@ -1,0 +1,25 @@
+{
+    "name": "selenium-grids",
+    "version": "1.0.0",
+    "description": "A POC about the way of manipulate the Selenium grids for several platforms (Edge, Chrome or even Android, iOS, ...)",
+    "main": "test_chrome.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gigouni/selenium-grids.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/gigouni/selenium-grids/issues"
+    },
+    "homepage": "https://github.com/gigouni/selenium-grids#readme",
+    "dependencies": {
+        "chromedriver": "^2.30.1",
+        "mocha": "^3.4.2",
+        "selenium-webdriver": "^3.4.0"
+    }
+}

@@ -58,7 +58,7 @@ $ java -jar ~/Downloads/selenium-server-standalone-3.4.0.jar -port 4444 -role hu
 
 If it's displaying _'INFO - Selenium Grid hub is up and running'_, your server starts successfully
 
-* 
+* mocha src/web.js
 
 ## Change logs
 
