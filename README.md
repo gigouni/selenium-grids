@@ -58,7 +58,9 @@ $ java -jar ~/Downloads/selenium-server-standalone-3.4.0.jar -port 4444 -role hu
 
 If it's displaying _'INFO - Selenium Grid hub is up and running'_, your server starts successfully
 
-* mocha src/web.js
+Run the tests with Mocha (timeout to let the script works. Increase it if you're computer is slow & need more time)
+
+* $ mocha --timeout 10000 src/web.js
 
 ## Change logs
 
@@ -69,3 +71,4 @@ Check the [CHANGELOG.md](./CHANGELOG.md)
 * [Selenium grid for Appium mobile automation](http://www.vimalselvam.com/2016/05/15/selenium-grid-for-appium-mobile-automation/)
 * [Running selenium functional tests in webdriver.io against selenium grid setup guide](https://medium.com/@dbillinghamuk/running-selenium-functional-tests-in-webdriver-io-against-selenium-grid-setup-guide-aabbfda9c05d)
 * [Selenium grid for RC and WebDriver](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
+* [Class Driver](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/ie_exports_Driver.html#wait)
