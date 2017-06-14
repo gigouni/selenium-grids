@@ -20,4 +20,16 @@ test.describe('Search my website on Google', () => {
         driver.wait(until.titleIs('Nicolas GIGOU'));
         driver.quit();
     });
+
+    test.it('should redirect to my website with FIREFOX', () => {
+        driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.firefox()).build()
+        driver.get('http://google.com');
+        driver.wait(until.titleIs('Google'));
+        driver.wait(until.elementLocated(By.name('q'))).sendKeys('nicolas gigou');
+        driver.findElement(By.name('btnG')).click();
+        driver.wait(until.titleIs('nicolas gigou - Recherche Google'));
+        driver.wait(until.elementLocated(By.tagName('h3.r a'))).click();
+        driver.wait(until.titleIs('Nicolas GIGOU'));
+        driver.quit();
+    });
 });
