@@ -60,7 +60,22 @@ If it's displaying _'INFO - Selenium Grid hub is up and running'_, your server s
 
 Run the tests with Mocha (timeout to let the script works. Increase it if you're computer is slow & need more time)
 
-* $ mocha --timeout 10000 src/web.js
+```shell
+$ # Run the Selenium hub 172.17.0.1:4444
+$ java -jar bin/selenium-server.jar -role hub -host 172.17.0.1 -port 4444
+$
+$ # Run the Firefox node 172.17.0.1:5555 and connect it to the Selenium hub
+$ java -jar bin/selenium-server.jar -role node -hub http://172.17.0.1:4444/grid/register -browser browserName=firefox  -port 5555
+$
+$ # Run the Chrome node 172.17.0.1:5557 and connect it to the Selenium hub
+$ java -Dwebdriver.chrome.driver=bin/drivers/chromedriver -jar bin/selenium-server.jar -role webdriver -hub  http://172.17.0.1:4444/grid/register -browser browserName=chrome,platform=LINUX -port 5557
+$
+$ # Run the Edge node 172.17.0.1:5558 and connect it to the Selenium hub
+$ java -Dwebdriver.edge.driver=bin/drivers/MicrosoftWebDriver.exe -jar bin/selenium-server.jar -role webdriver -hub http://172.17.0.1:4444/grid/register -browser browserName=edge,platform=LINUX -port 5558
+$
+$ # Run the web tests for the previous browsers
+$ mocha --timeout 30000 src/web.js
+```
 
 ## Change logs
 
