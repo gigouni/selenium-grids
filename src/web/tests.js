@@ -11,42 +11,29 @@ let test = require('selenium-webdriver/testing');
 // ------------------------------------------------------------- //
 //                      Remote testing                           //
 // ------------------------------------------------------------- //
-test.describe('Search Google on Google (Google-ception)', () => {
+test.describe('Work with REMOTE URL', () => {
     var driver;
 
-    test.it('should redirect to my website with CHROME', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5557/wd/hub').withCapabilities(webdriver.Capabilities.chrome()).build()
-        driver.get('http://google.com');
-        driver.wait(until.titleIs('Google'));
-        driver.wait(until.elementLocated(By.name('q'))).sendKeys('google');
-        driver.findElement(By.name('btnG')).click();
-        driver.wait(until.titleIs('google - Recherche Google'));
-        driver.wait(until.elementLocated(By.tagName('h3.r a'))).click();
-        driver.wait(until.titleIs('Google'));
-        driver.quit();
+    test.it('should redirect to Google with CHROME', () => {
+        driver = new webdriver.Builder().usingServer(CONSTANTS.CHROME_NODE).withCapabilities(webdriver.Capabilities.chrome()).build();
     });
 
-    test.it('should redirect to my website with FIREFOX', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5555/wd/hub').withCapabilities(webdriver.Capabilities.firefox()).build()
-        driver.get('http://google.com');
-        driver.wait(until.titleIs('Google'));
-        driver.wait(until.elementLocated(By.name('q'))).sendKeys('google');
-        driver.findElement(By.name('btnG')).click();
-        driver.wait(until.titleIs('google - Recherche Google'));
-        driver.wait(until.elementLocated(By.tagName('h3.r a'))).click();
-        driver.wait(until.titleIs('Google'));
-        driver.quit();
+    test.it('should redirect to Google with FIREFOX', () => {
+        driver = new webdriver.Builder().usingServer(CONSTANTS.FIREFOX_NODE).withCapabilities(webdriver.Capabilities.firefox()).build();
     });
 
-    test.it('should redirect to my website with EDGE', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5558/wd/hub').withCapabilities(webdriver.Capabilities.edge()).build()
-        driver.get('http://google.com');
-        driver.wait(until.titleIs('Google'));
-        driver.wait(until.elementLocated(By.name('q'))).sendKeys('google');
-        driver.findElement(By.name('btnG')).click();
-        driver.wait(until.titleIs('google - Recherche Google'));
-        driver.wait(until.elementLocated(By.tagName('h3.r a'))).click();
-        driver.wait(until.titleIs('Google'));
+    test.it('should redirect to Google with EDGE', () => {
+        driver = new webdriver.Builder().usingServer(CONSTANTS.EDGE_NODE).withCapabilities(webdriver.Capabilities.edge()).build();
+    });
+
+    test.after(() => {
+        driver.get(CONSTANTS.GOOGLE_URL);
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
+        driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_ID)).click();
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_SEARCH_TITLE));
+        driver.wait(until.elementLocated(By.tagName(CONSTANTS.GOOGLE_RES_LINK))).click();
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.quit();
     });
 });
@@ -54,30 +41,25 @@ test.describe('Search Google on Google (Google-ception)', () => {
 // ------------------------------------------------------------- //
 //                      Local testing                            //
 // ------------------------------------------------------------- //
-test.describe('Work with local file', () => {
+test.describe('Work with LOCAL file', () => {
     var driver;
 
     test.it('should redirect to Google with CHROME', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5557/wd/hub').withCapabilities(webdriver.Capabilities.chrome()).build()
-        driver.get('file://' + PATH.join(__dirname, 'index.html'));
-        driver.wait(until.elementLocated(By.id('link'))).click();
-        driver.wait(until.titleIs('Google'));
-        driver.quit();
+        driver = new webdriver.Builder().usingServer(CONSTANTS.CHROME_NODE).withCapabilities(webdriver.Capabilities.chrome()).build();
     });
 
     test.it('should redirect to Google with FIREFOX', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5555/wd/hub').withCapabilities(webdriver.Capabilities.firefox()).build()
-        driver.get('file://' + PATH.join(__dirname, 'index.html'));
-        driver.wait(until.elementLocated(By.id('link'))).click();
-        driver.wait(until.titleIs('Google'));
-        driver.quit();
+        driver = new webdriver.Builder().usingServer(CONSTANTS.FIREFOX_NODE).withCapabilities(webdriver.Capabilities.firefox()).build();
     });
 
     test.it('should redirect to Google with EDGE', () => {
-        driver = new webdriver.Builder().usingServer('http://172.17.0.1:5558/wd/hub').withCapabilities(webdriver.Capabilities.edge()).build()
+        driver = new webdriver.Builder().usingServer(CONSTANTS.EDGE_NODE).withCapabilities(webdriver.Capabilities.edge()).build();
+    });
+
+    test.after(() => {
         driver.get('file://' + PATH.join(__dirname, 'index.html'));
-        driver.wait(until.elementLocated(By.id('link'))).click();
-        driver.wait(until.titleIs('Google'));
+        driver.wait(until.elementLocated(By.id(CONSTANTS.LINK_ID))).click();
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.quit();
     });
 });
