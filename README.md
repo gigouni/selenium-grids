@@ -74,7 +74,7 @@ $ # Run the Edge node 172.17.0.1:5558 and connect it to the Selenium hub
 $ java -Dwebdriver.edge.driver=bin/drivers/MicrosoftWebDriver.exe -jar bin/selenium-server.jar -role webdriver -hub http://172.17.0.1:4444/grid/register -browser browserName=edge,platform=LINUX -port 5558
 $
 $ # Run the web tests for the previous browsers
-$ mocha --timeout 30000 src/web.js
+$ mocha --timeout 30000 src/web/tests.js
 ```
 
 ## Change logs
