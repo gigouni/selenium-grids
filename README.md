@@ -47,10 +47,10 @@ $ # CHROME NODE
 $ # Works with the stable, beta, unstable versions
 $ git clone https://github.com/gigouni/selenium-grids && cd selenium-grids/docker
 $ sudo docker build -t test/chrome .
-$ sudo docker run -it --rm --link selenium-hub:hub test/chrome
+$ sudo docker run -it --rm --link my-selenium-hub:hub test/chrome
 $ 
 $ # FIREFOX NODE
 $ # Works with the desired versions
 $ sudo docker build --build-arg FIREFOX_VERSION=MY_VERSION -t test/firefoxMY_VERSION .
-$ sudo docker run -it --rm --link selenium-hub:hub test/firefoxMY_VERSION
+$ sudo docker run -it --rm --link my-selenium-hub:hub test/firefoxMY_VERSION
 ```
