@@ -33,7 +33,7 @@ $ sudo docker build --build-arg FIREFOX_VERSION=YOUR_VERSION -t test/firefoxYOUR
 Run your Selenium hub (_if it's not already running_)
 
 ```shell
-$ udo docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
+$ sudo docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
 ```
 
 Run your new Firefox image

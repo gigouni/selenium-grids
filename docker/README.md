@@ -6,7 +6,7 @@ A POC about the way of manipulate the Selenium grids for several platforms (Edge
 
 - [1. Selenium grids & Docker](#1-selenium-grids--docker)
     - [1.1. What it is?](#11-what-it-is)
-        - [1.2. Explanations](#12-explanations)
+    - [1.2. Explanations](#12-explanations)
 
 <!-- /TOC -->
 
@@ -18,21 +18,21 @@ Run it this way avoid almost all integrations problems and is a time-earner.
 
 ```shell
 $ # SELENIUM HUB
-$ sudo docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
+$ sudo docker run -it --rm -p 4444:4444 --name my-selenium-hub selenium/hub:3.4.0-dysprosium
 $ 
 $ # CHROME NODE
 $ # Works with the stable, beta, unstable versions
 $ git clone https://github.com/gigouni/selenium-grids && cd selenium-grids/docker
-$ sudo docker build -t test/chrome .
-$ sudo docker run -it --rm --link selenium-hub:hub test/chrome
+$ cd chrome && sudo docker build -t test/chrome .
+$ sudo docker run -it --rm --link my-selenium-hub:hub test/chrome
 $ 
 $ # FIREFOX NODE
 $ # Works with the desired versions
-$ sudo docker build --build-arg FIREFOX_VERSION=MY_VERSION -t test/firefoxMY_VERSION .
-$ sudo docker run -it --rm --link selenium-hub:hub test/firefoxMY_VERSION
+$ $ cd firefox && sudo docker build --build-arg FIREFOX_VERSION=MY_VERSION -t test/firefoxMY_VERSION .
+$ sudo docker run -it --rm --link my-selenium-hub:hub test/firefoxMY_VERSION
 ```
 
-### 1.2. Explanations
+## 1.2. Explanations
 
 * __sudo__: Avoid issues like the most popular one '_Cannot connect to the Docker daemon. Is the docker daemon running on this host?_'
 * __docker__: Yep, it's easier to use Docker while calling the docker command

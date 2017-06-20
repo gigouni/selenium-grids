@@ -8,7 +8,6 @@ A POC about the way of manipulate the Selenium grids for several platforms (Edge
     - [1.1. What it is?](#11-what-it-is)
     - [1.2. The objectives](#12-the-objectives)
     - [1.3. How to proceed (_the Docker version_)](#13-how-to-proceed-_the-docker-version_)
-    - [1.4. Change logs](#14-change-logs)
 
 <!-- /TOC -->
 
@@ -55,7 +54,3 @@ $ # Works with the desired versions
 $ sudo docker build --build-arg FIREFOX_VERSION=MY_VERSION -t test/firefoxMY_VERSION .
 $ sudo docker run -it --rm --link selenium-hub:hub test/firefoxMY_VERSION
 ```
-
-## 1.4. Change logs
-
-Check the [CHANGELOG.md](./CHANGELOG.md)
