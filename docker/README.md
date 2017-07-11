@@ -34,7 +34,7 @@ $ sudo docker run -it --rm --link my-selenium-hub:hub test/firefoxMY_VERSION
 
 ## 1.2. Explanations
 
-* __sudo__: Avoid issues like the most popular one '_Cannot connect to the Docker daemon. Is the docker daemon running on this host?_'
+* __sudo__: Optional but can avoid issues like the most popular one '_Cannot connect to the Docker daemon. Is the docker daemon running on this host?_'
 * __docker__: Yep, it's easier to use Docker while calling the docker command
 * __run__: Run an existing, local or remote, Docker image
 * __-it__: Bind the output with your terminal

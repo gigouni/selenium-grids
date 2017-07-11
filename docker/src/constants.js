@@ -22,8 +22,8 @@
 
 //                       Hub and nodes                           //
 // ------------------------------------------------------------- //
-const _FIREFOX_HOST = 'http://172.17.0.5';
-const _CHROME_HOST = 'http://172.17.0.4';
+const _FIREFOX_HOST = 'http://172.17.0.4';
+const _CHROME_HOST = 'http://172.17.0.3';
 const _PORT_BASE = 5555;
 const _PATH_TO_HUB = '/wd/hub';
 

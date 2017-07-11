@@ -14,7 +14,10 @@ test.describe('Work with REMOTE URL', () => {
     var driver;
 
     test.it('should redirect to Google with CHROME', () => {
-        driver = new webdriver.Builder().usingServer(CONSTANTS.CHROME_NODE).withCapabilities(webdriver.Capabilities.chrome()).build();
+        driver = new webdriver.Builder()
+            .usingServer(CONSTANTS.CHROME_NODE)
+            .withCapabilities(webdriver.Capabilities.chrome())
+            .build();
         driver.get(CONSTANTS.GOOGLE_URL);
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
@@ -26,7 +29,10 @@ test.describe('Work with REMOTE URL', () => {
     });
 
     test.it('should redirect to Google with FIREFOX', () => {
-        driver = new webdriver.Builder().usingServer(CONSTANTS.FIREFOX_NODE).withCapabilities(webdriver.Capabilities.firefox()).build();
+        driver = new webdriver.Builder()
+            .usingServer(CONSTANTS.FIREFOX_NODE)
+            .withCapabilities(webdriver.Capabilities.firefox())
+            .build();
         driver.get(CONSTANTS.GOOGLE_URL);
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
