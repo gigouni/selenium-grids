@@ -11,8 +11,10 @@ let test = require('selenium-webdriver/testing');
 //                      Remote testing                           //
 // ------------------------------------------------------------- //
 test.describe('Work with REMOTE URL', () => {
+
     var driver;
 
+    /*
     test.it('should redirect to Google with CHROME', () => {
         driver = new webdriver.Builder().usingServer(CONSTANTS.CHROME_NODE).withCapabilities(webdriver.Capabilities.chrome()).build();
         driver.get(CONSTANTS.GOOGLE_URL);
@@ -24,8 +26,12 @@ test.describe('Work with REMOTE URL', () => {
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.quit();
     });
+    */
+
+    console.log(`Do you want to use Marionette for FF < 47? ${process.env.MARIONETTE}`);
 
     test.it('should redirect to Google with FIREFOX', () => {
+        //driver = new webdriver.Builder().usingServer(CONSTANTS.FIREFOX_NODE).withCapabilities(webdriver.Capabilities.firefox(), { marionette: true }).build();
         driver = new webdriver.Builder().usingServer(CONSTANTS.FIREFOX_NODE).withCapabilities(webdriver.Capabilities.firefox()).build();
         driver.get(CONSTANTS.GOOGLE_URL);
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
