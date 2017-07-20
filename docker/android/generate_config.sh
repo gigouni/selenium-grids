@@ -27,7 +27,10 @@ if [ -z "$BROWSER_NAME" ]; then
 fi
 
 if [ -z "$UDID" ]; then
-  UDID=`ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
+  # docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}' --> Get the ID of the device container
+  # docker exec -it <container-name-or-id> bash --> Execute a command within a running container 
+  # ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}' --> Get the UDID of the emulated device
+  UDID=`docker exec -it $(docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
 fi
 
 #Get device names
