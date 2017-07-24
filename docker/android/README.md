@@ -1,34 +1,52 @@
 # 1. Appium server
 
-![Appium](http://techcanvass.com/images/appium-banner.png "Appium banner")
-
 <!-- TOC -->
 
 - [1. Appium server](#1-appium-server)
-    - [1.1. Getting started](#11-getting-started)
-        - [1.1.1. Conveniences](#111-conveniences)
-        - [1.1.2. Build](#112-build)
-            - [1.1.2.1. Basic build](#1121-basic-build)
-            - [1.1.2.2. Complete build](#1122-complete-build)
-        - [1.1.3. Run](#113-run)
-            - [1.1.3.1. With AVD](#1131-with-avd)
-                - [1.1.3.1.1. Create an AVD](#11311-create-an-avd)
-                - [1.1.3.1.2. Run the AVD (and test its existence btw)](#11312-run-the-avd-and-test-its-existence-btw)
-                - [1.1.3.1.3. Get the UUID of the emulated device](#11313-get-the-uuid-of-the-emulated-device)
-            - [1.1.3.2. With Docker](#1132-with-docker)
-            - [1.1.3.3. Run without connection to the Selenium grid](#1133-run-without-connection-to-the-selenium-grid)
-            - [1.1.3.4. Run with connection to the Selenium grid](#1134-run-with-connection-to-the-selenium-grid)
+    - [1.1. tl;dr](#11-tldr)
+    - [1.2. Getting started](#12-getting-started)
+        - [1.2.1. Conveniences](#121-conveniences)
+        - [1.2.2. Build](#122-build)
+            - [1.2.2.1. Basic build](#1221-basic-build)
+            - [1.2.2.2. Complete build](#1222-complete-build)
+        - [1.2.3. Run](#123-run)
+            - [1.2.3.1. Device emulated with AVD](#1231-device-emulated-with-avd)
+                - [1.2.3.1.1. Create an AVD](#12311-create-an-avd)
+                - [1.2.3.1.2. Run the AVD (and test its existence btw)](#12312-run-the-avd-and-test-its-existence-btw)
+                - [1.2.3.1.3. Get the UUID of the emulated device](#12313-get-the-uuid-of-the-emulated-device)
+            - [1.2.3.2. Device within Docker](#1232-device-within-docker)
+            - [1.2.3.3. Run without connection to the Selenium grid](#1233-run-without-connection-to-the-selenium-grid)
+            - [1.2.3.4. Run with connection to the Selenium grid](#1234-run-with-connection-to-the-selenium-grid)
 
 <!-- /TOC -->
 
 Aim of this part: Run an Appium server within a Docker container, able to
 connect to a Selenium grid using its IP address.
 
-## 1.1. Getting started
+## 1.1. tl;dr
+
+1. Run the hub
+2. Run the device emulator
+3. Run the Appium server
+4. Configure the tests using the correct UUID
+5. Run the tests
+
+```shell
+$ # Hub
+$ docker run -it --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0-dysprosium
+$ xdg-open http://172.17.0.2:4444/grid/console
+$
+$ # Device emulator
+$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
+$
+$ # Appium server
+```
+
+## 1.2. Getting started
 
 You may already have the Dockerfile and the mandatory files if you're able to read this. You just need to run the _build_ step based on the Dockerfile. Then, go for the run of the generated image.
 
-### 1.1.1. Conveniences
+### 1.2.1. Conveniences
 
 For convenience problems, think about the use of aliases or environment variables in your next commands. Here we'll add 
 
@@ -39,14 +57,14 @@ PATH=$PATH:$ANDROID_HOME/tools/bin/ ; export PATH
 
 at the end of our ~/.bashrc to simplify the commands. In case you're not able to do it, just replace the commands by their absolute path.
 
-### 1.1.2. Build
-#### 1.1.2.1. Basic build
+### 1.2.2. Build
+#### 1.2.2.1. Basic build
 
 ```shell
 $ docker build -t gigouni/appium-1.6.5 .
 ```
 
-#### 1.1.2.2. Complete build
+#### 1.2.2.2. Complete build
 
 ```shell
 $ docker build \
@@ -57,13 +75,13 @@ $ docker build \
     .
 ```
 
-### 1.1.3. Run
+### 1.2.3. Run
 
 To run correctly, the Appium server needs to be bind to (at least) one Android device. To do this, we need to create an AVD (_Android Virtual Device_) through the Android Studio command line interface or use a dockerize device.
 
-#### 1.1.3.1. With AVD
+#### 1.2.3.1. Device emulated with AVD
 
-##### 1.1.3.1.1. Create an AVD
+##### 1.2.3.1.1. Create an AVD
 
 Here, creating an API 24 Android device. By example, the 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
 
@@ -88,7 +106,7 @@ $ echo no | avdmanager create avd \
 To assume the list of correct API versions, check [this out](https://developer.android.com/about/dashboards/index.html).
 For the documentation about ABIs, [check this out](https://developer.android.com/ndk/guides/abis.html).
 
-##### 1.1.3.1.2. Run the AVD (and test its existence btw)
+##### 1.2.3.1.2. Run the AVD (and test its existence btw)
 
 One you've created AVDs, you are able to consult the exhaustive list of them all.
 
@@ -164,7 +182,7 @@ It seems to be due to the incompatibilities between the Host GPU and the emulate
 $ emulator -avd gigouni_android_devices_API24 -gpu host
 ```
 
-##### 1.1.3.1.3. Get the UUID of the emulated device
+##### 1.2.3.1.3. Get the UUID of the emulated device
 
 Finally, that's now that your AVD is important. If we're considering using an emulated device without Docker, we have to search the UUID of our device directly from the host machine. To get it, we have to run the command 
 
@@ -178,7 +196,9 @@ If _ll_ is not recognized as a command, your 'll' alias might not be set. Just u
 $ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
 ```
 
-#### 1.1.3.2. With Docker 
+You can check the way it's handle in the _./generate_config.sh_ file.
+
+#### 1.2.3.2. Device within Docker 
 
 The interest of Docker was to be able to whenever dispose of a ready Android device. It's an easy tool and improve the deployment process.
 
@@ -186,7 +206,7 @@ But before continuing, you need to know that there are some cons passing by Dock
 
 If you still want to test it, check [this README](./devices/README.md).
 
-#### 1.1.3.3. Run without connection to the Selenium grid
+#### 1.2.3.3. Run without connection to the Selenium grid
 
 ```shell
 $ docker run -it \
@@ -194,7 +214,7 @@ $ docker run -it \
     gigouni/appium-1.6.5
 ```
 
-#### 1.1.3.4. Run with connection to the Selenium grid
+#### 1.2.3.4. Run with connection to the Selenium grid
 
 ```shell
 $ docker run -it \

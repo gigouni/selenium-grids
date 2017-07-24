@@ -49,44 +49,48 @@ RUN apt-get -qqy update && \
 #===============
 # Set JAVA_HOME
 #===============
-ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre" \
-    PATH=$PATH:$JAVA_HOME/bin
+ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
+ENV PATH="$PATH:$JAVA_HOME/bin"
 
 #=====================
 # Install Android SDK
 #=====================
 ARG SDK_VERSION=25.2.3
 ARG ANDROID_BUILD_TOOLS_VERSION=25.0.3
-ENV SDK_VERSION=$SDK_VERSION \
-    ANDROID_BUILD_TOOLS_VERSION=$ANDROID_BUILD_TOOLS_VERSION \
-    ANDROID_HOME=/root
+ENV SDK_VERSION=${SDK_VERSION}
+ENV ANDROID_BUILD_TOOLS_VERSION=${ANDROID_BUILD_TOOLS_VERSION}
+ENV ANDROID_HOME="/root"
 
 RUN wget -O tools.zip https://dl.google.com/android/repository/tools_r${SDK_VERSION}-linux.zip && \
     unzip tools.zip && rm tools.zip && \
-    chmod a+x -R $ANDROID_HOME && \
-    chown -R root:root $ANDROID_HOME
+    chmod a+x -R ${ANDROID_HOME} && \
+    chown -R root:root ${ANDROID_HOME}
 
-ENV PATH=$PATH:$ANDROID_HOME/tools
+ENV PATH=${PATH}:${ANDROID_HOME}/tools
+
+RUN echo ${PATH}
 
 RUN echo y | android update sdk -a -u -t platform-tools,build-tools-${ANDROID_BUILD_TOOLS_VERSION}
 
-ENV PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools
+ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
 
 #====================================
 # Install latest nodejs, npm, appium
 #====================================
 ARG APPIUM_VERSION=1.6.5
-ENV APPIUM_VERSION=$APPIUM_VERSION
+ENV APPIUM_VERSION=${APPIUM_VERSION}
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \ 
-    apt-get -qqy install nodejs && \ 
-    npm install --unsafe-perm && \ 
-    npm install -g appium@${APPIUM_VERSION} --no-shrinkwrap --unsafe-perm && \ 
-    npm cache clean --force && \ 
-    apt-get remove --purge -y npm && \ 
-    apt-get autoremove --purge -y && \ 
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \ 
-    apt-get clean
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - 
+RUN apt-get -qqy install nodejs
+RUN npm install -g gulp 
+RUN npm install -g appium-doctor
+RUN appium-doctor 
+RUN npm install -g appium@${APPIUM_VERSION} --no-shrinkwrap --unsafe-perm 
+RUN npm cache clean --force 
+RUN apt-get remove --purge -y npm 
+RUN apt-get autoremove --purge -y 
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+RUN apt-get clean
 
 #==================================
 # Fix Issue with timezone mismatch
