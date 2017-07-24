@@ -11,7 +11,7 @@
         - [1.1.3. Run](#113-run)
             - [1.1.3.1. With AVD](#1131-with-avd)
                 - [1.1.3.1.1. Create an AVD](#11311-create-an-avd)
-                - [1.1.3.1.2. [TODO] Run the AVD to test it](#11312-todo-run-the-avd-to-test-it)
+                - [1.1.3.1.2. Run the AVD to test it](#11312-run-the-avd-to-test-it)
             - [1.1.3.2. With Docker](#1132-with-docker)
             - [1.1.3.3. Run without connection to the Selenium grid](#1133-run-without-connection-to-the-selenium-grid)
             - [1.1.3.4. Run with connection to the Selenium grid](#1134-run-with-connection-to-the-selenium-grid)
@@ -62,7 +62,7 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 
 ##### 1.1.3.1.1. Create an AVD
 
-Here, creating an API 24 Android device. The 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
+Here, creating an API 24 Android device. By example, the 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
 
 ```shell
 $ echo y | sdkmanager update sdk --filter android-24 --no-ui -a
@@ -83,16 +83,66 @@ $ echo no | avdmanager create avd \
 ```
 
 To assume the list of correct API versions, check [this out](https://developer.android.com/about/dashboards/index.html).
+For the documentation about ABIs, [check this out](https://developer.android.com/ndk/guides/abis.html).
 
-##### 1.1.3.1.2. [TODO] Run the AVD to test it
+##### 1.1.3.1.2. Run the AVD to test it
 
-/--> **Content to add ASAP** <--/
+One you've created AVDs, you are able to consult the exhaustive list of them all.
+
+```shell
+$ avdmanager list avd
+```
+
+If you want to check the existence of a specific AVD, you can use
+
+```shell
+$ # Generic form
+$ avdmanager list avd | grep <avd-name>
+$ 
+$ # Example
+$ avdmanager list avd | grep gigouni_android_devices_API24
+```
+
+You shall be seeing something like
+
+```shell
+$ avdmanager list avd | grep gigouni_android_devices_API24
+    Name: gigouni_android_devices_API24
+    Path: /home/gigouni/.android/avd/gigouni_android_devices_API24.avd
+```
+
+If not, return to the _Create an AVD step_. If it's good, let's run the emulator (from $ANDROID_HOME/tools/emulator).
+
+```shell
+# Generic form
+$ emulator -avd <avd-name>
+$ # or
+$ emulator @<avd-name>
+$
+$ # Example
+$ emulator -avd gigouni_android_devices_API24
+```
+
+__Possible issues:__
+
+* Qt library not found
+
+```shell
+[139659433264960]:ERROR:./android/qt/qt_setup.cpp:28:Qt library not found at ../emulator/lib64/qt/lib
+Could not launch '../emulator/qemu/linux-x86_64/qemu-system-i386': No such file or directory
+```
+
+It's a [known error](https://issuetracker.google.com/issues/37137213), even if it's not a real one. Just avoid using your emulator from $ANDROID_HOME/tools/emulator but use $ANDROID_HOME/emulator/emulator instead.
+
+* Cannot run the emulator for these settings
+
+Not the exact message but you've got it. If you're getting it, you've got a problem during the configuration of your device. The ABI and/or the target might not be matching a suitable combination. Edit it following the documentation links and repeat the previous operations.
 
 #### 1.1.3.2. With Docker 
 
 The interest of Docker was to be able to whenever dispose of a ready Android device. It's an easy tool and improve the deployment process.
 
-But before continuing, you need to know that there are some cons passing by Docker for the device emulation. First of all, the emulated device is _emulated_. It means that  it's already wrap within a virtual machine, the AVD manager of Android Studio. The second argument is about data access. If we need to access data for the contained Appium server from the contained device, the Appium server won't be able to connect to the device (not the same "system environment").
+But before continuing, you need to know that there are some cons passing by Docker for the device emulation. First of all, the emulated device is _emulated_. It means that it's already wrap within a virtual machine. The second argument is about data access. If we need to access data for the contained Appium server from the contained device, the Appium server won't be able to connect to the device (not the same "system environment").
 
 If you still want to test it, check [this README](./devices/README.md).
 
