@@ -1,5 +1,7 @@
 # 1. Appium server
 
+![Appium](http://techcanvass.com/images/appium-banner.png "Appium banner")
+
 <!-- TOC -->
 
 - [1. Appium server](#1-appium-server)
@@ -164,7 +166,17 @@ $ emulator -avd gigouni_android_devices_API24 -gpu host
 
 ##### 1.1.3.1.3. Get the UUID of the emulated device
 
-Finally, that's now that your AVD is important.
+Finally, that's now that your AVD is important. If we're considering using an emulated device without Docker, we have to search the UUID of our device directly from the host machine. To get it, we have to run the command 
+
+```shell
+$ ll /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
+```
+
+If _ll_ is not recognized as a command, your 'll' alias might not be set. Just use 
+
+```shell
+$ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
+```
 
 #### 1.1.3.2. With Docker 
 
@@ -198,17 +210,20 @@ $ docker run -it \
     gigouni/appium-1.6.5
 ```
 
-To get the IP address of your Selenium hub, run an instance of the Selenium
+These values are the default one, except for the UUID. It's just to show you the expected format of a UUID (_Universal Unique Identifier_). If you provide a false UUID, the Appium server won't be able to connect to the device and to run the tests. Here, the UUID environment variable is __only__ if you want to force a specific device.
+
+To get the IP address of your Selenium hub, run an instance of the hub
 image and use the next command
 
 ```shell
-$ # docker ps | grep "selenium/hub" | awk '{print $1}' -> Get container ID
-$ # docker inspect -> Get properties of the container
-$ # head -n1 -> Get the first line of IPAddress (it's given twice)
-$ # awk '{print $2}' -> Only catch the IP address without the label
-$ # tr -d \" | tr -d \, -> Remove the boring special characters
 $ docker inspect $(docker ps | grep "selenium/hub" | awk '{print $1}') | grep "\"IPAddress\"" | head -n1 | awk '{print $2}' | tr -d \" | tr -d \,
 ```
+
+* _docker ps | grep "selenium/hub" | awk '{print $1}'_ -> Get container ID
+* _docker inspect_ -> Get properties of the container
+* _head -n1_ -> Get the first line of IPAddress (it's given twice)
+* _awk '{print $2}'_ -> Only catch the IP address without the label
+* _tr -d \" | tr -d \,_ -> Remove the boring special characters
 
 _Note:_ If this command returns _""docker inspect" requires at least 1 argument(s)."_,
 you may haven't run the Selenium hub yet.

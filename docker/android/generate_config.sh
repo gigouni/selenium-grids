@@ -27,10 +27,15 @@ if [ -z "$BROWSER_NAME" ]; then
 fi
 
 if [ -z "$UUID" ]; then
-  # docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}' --> Get the ID of the device container
+  # If you want to run the command within a Docker container
+  # docker ps | grep "<container-name>" | head -n1 | awk '{print $1}' --> Get the ID of the device container
   # docker exec -it <container-name-or-id> bash --> Execute a command within a running container 
   # ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}' --> Get the UUID of the emulated device
-  UUID=`docker exec -it $(docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
+  # UUID=`docker exec -it $(docker ps | grep "<container-name>" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
+  
+  # To run the command while hosting the emulator directly in the host machine
+  UUID=`ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
+  echo "Caught $UUID as an UUID for the Android device" 
 fi
 
 #Get device names
