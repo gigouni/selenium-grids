@@ -1,21 +1,18 @@
-# 1. Selenium grids
+# 1. Selenium grids & Docker
 
 A POC about the way of manipulate the Selenium grids for several platforms (Edge, Chrome or even Android, iOS, ...)
 
 <!-- TOC -->
 
-- [1. Selenium grids](#1-selenium-grids)
+- [1. Selenium grids & Docker](#1-selenium-grids--docker)
     - [1.1. What it is?](#11-what-it-is)
     - [1.2. The objectives](#12-the-objectives)
-    - [1.3. How to proceed (_the Docker version_)](#13-how-to-proceed-_the-docker-version_)
-    - [1.4. Dev in progress](#14-dev-in-progress)
-    - [1.5. Branches](#15-branches)
 
 <!-- /TOC -->
 
 ## 1.1. What it is?
 
-[The Selenium grids](http://www.seleniumhq.org/projects/grid/) are tools to automatize tests on several OS and browsers. The grids are the hub of possible targets for the tests.
+[The Selenium grids](http://www.seleniumhq.org/projects/grid/) are tools to automatize tests on several OS and browsers. The grids are the hub of possible targets for the tests. For a better deployment process, Docker has been fully implemented and documented in sub-folders. [Docker](https://www.docker.com/) is a way to build light app within containers running on everywhere server or production system, independently of the host OS.
 
 ## 1.2. The objectives
 
@@ -36,34 +33,3 @@ The support should be resolved for
 * Internet Explorer 11
 * Android
 * iOS
-
-## 1.3. How to proceed (_the Docker version_)
-
-You can have [the details here](./docker/README.md) or just follow the next commands
-
-```shell
-$ # SELENIUM HUB
-$ sudo docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
-$ 
-$ # CHROME NODE
-$ # Works with the stable, beta, unstable versions
-$ git clone https://github.com/gigouni/selenium-grids && cd selenium-grids/docker
-$ sudo docker build -t test/chrome .
-$ sudo docker run -it --rm --link my-selenium-hub:hub test/chrome
-$ 
-$ # FIREFOX NODE
-$ # Works with the desired versions
-$ sudo docker build --build-arg FIREFOX_VERSION=MY_VERSION -t test/firefoxMY_VERSION .
-$ sudo docker run -it --rm --link my-selenium-hub:hub test/firefoxMY_VERSION
-```
-
-## 1.4. Dev in progress
-
-Check [this branch](../dev/README.md) for more content
-
-## 1.5. Branches
-
-* [master](./README.md)
-* [dev](../dev/README.md)
-    * [feature/web-tests](../feature/web-tests/README.md)
-    * [feature/docker](../feature/docker/README.md)
