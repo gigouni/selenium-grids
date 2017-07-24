@@ -10,6 +10,9 @@
             - [1.2.1.2. Complete build](#1212-complete-build)
         - [1.2.2. Run](#122-run)
     - [1.3. Maintainability](#13-maintainability)
+        - [1.3.1. Logs](#131-logs)
+        - [1.3.2. SDK version](#132-sdk-version)
+    - [Additional information](#additional-information)
 
 <!-- /TOC -->
 
@@ -33,6 +36,12 @@ If the result > 0, you can operate hardware acceleration. Just check if it exist
 
 ```shell
 $ ls /dev/kvm
+```
+
+You can load the KVM module with
+
+```shell
+$ modprobe kvm-intel
 ```
 
 ## 1.2. Getting started
@@ -67,6 +76,7 @@ $ docker run -it --rm --device /dev/kvm ts_selenium/android_device
 _Note:_ The _--device /dev/kvm_ attribute is mandatory to pass the KVM from the host machine to the android device.
 
 ## 1.3. Maintainability
+### 1.3.1. Logs
 
 If you're encountering some troubles running or building your Docker image, the logs are available within the container in _/var/log/supervisor_
 
@@ -76,4 +86,49 @@ $ docker exec -it $(dops | grep "ts_selenium/android_device" | head -n1 | awk '{
 $
 $ # Move to the logs folder
 $ cd /var/log/supervisor
+```
+
+### 1.3.2. SDK version
+
+This image is based one the [TheDrHax's SDK image](https://github.com/TheDrHax/docker-android-sdk/blob/master/Dockerfile). While writing these lines, it's running on the r25.2.5 but it can be updated [here](https://github.com/TheDrHax/docker-android-sdk/blob/master/Dockerfile#LC14) or even make it apart in another sub-module.
+
+If you want to avoid the auto-update of the SDK version (and improve the build image process), remove it from [the Dockerfile](./Dockerfile) --> `$ANDROID_HOME/tools/bin/sdkmanager --update`.
+
+## Additional information
+
+To interact with the device and its inner configuration, you can connect to the container and play with ADB commands
+
+Connection to the container of the device
+
+```shell
+$ docker exec -it $(docker ps | grep android_device | awk '{print $1}') bash
+```
+
+Get system basic information
+
+```shell
+$ adb device -l
+$ # Should returns something like
+$ # List of devices attached
+$ # emulator-5554          
+$ # device product:sdk_phone_x86_64 model:Android_SDK_built_for_x86_64 device:generic_x86_64
+```
+
+Get exhaustive configuration information
+
+```shell
+$ adb -s emulator-5554 shell getprop
+$ # Should returns something like
+$ # [ARGH]: [ARGH]
+$ # [dalvik.vm.dex2oat-Xms]: [64m]
+$ # [dalvik.vm.dex2oat-Xmx]: [512m]
+$ # [dalvik.vm.heapsize]: [192m]
+$ # etc...
+```
+
+Get specific configuration information (here _ro.runtime.firstboot_)
+
+```shell
+$ adb -s emulator-5554 shell getprop ro.runtime.firstboot 
+1500626403550 
 ```

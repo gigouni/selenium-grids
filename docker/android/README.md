@@ -4,12 +4,17 @@
 
 - [1. Appium server](#1-appium-server)
     - [1.1. Getting started](#11-getting-started)
-        - [1.1.1. Build](#111-build)
-            - [1.1.1.1. Basic build](#1111-basic-build)
-            - [1.1.1.2. Complete build](#1112-complete-build)
-        - [1.1.2. Run](#112-run)
-            - [1.1.2.1. Run without connection to the Selenium grid](#1121-run-without-connection-to-the-selenium-grid)
-            - [1.1.2.2. Run with connection to the Selenium grid](#1122-run-with-connection-to-the-selenium-grid)
+        - [1.1.1. Conveniences](#111-conveniences)
+        - [1.1.2. Build](#112-build)
+            - [1.1.2.1. Basic build](#1121-basic-build)
+            - [1.1.2.2. Complete build](#1122-complete-build)
+        - [1.1.3. Run](#113-run)
+            - [1.1.3.1. With AVD](#1131-with-avd)
+                - [1.1.3.1.1. Create an AVD](#11311-create-an-avd)
+                - [1.1.3.1.2. [TODO] Run the AVD to test it](#11312-todo-run-the-avd-to-test-it)
+            - [1.1.3.2. With Docker](#1132-with-docker)
+            - [1.1.3.3. Run without connection to the Selenium grid](#1133-run-without-connection-to-the-selenium-grid)
+            - [1.1.3.4. Run with connection to the Selenium grid](#1134-run-with-connection-to-the-selenium-grid)
 
 <!-- /TOC -->
 
@@ -20,14 +25,25 @@ connect to a Selenium grid using its IP address.
 
 You may already have the Dockerfile and the mandatory files if you're able to read this. You just need to run the _build_ step based on the Dockerfile. Then, go for the run of the generated image.
 
-### 1.1.1. Build
-#### 1.1.1.1. Basic build
+### 1.1.1. Conveniences
+
+For convenience problems, think about the use of aliases or environment variables in your next commands. Here we'll add 
+
+```shell
+$ # For sdkmanager and avdmanager usage
+PATH=$PATH:$ANDROID_HOME/tools/bin/ ; export PATH
+```
+
+at the end of our ~/.bashrc to simplify the commands. In case you're not able to do it, just replace the commands by their absolute path.
+
+### 1.1.2. Build
+#### 1.1.2.1. Basic build
 
 ```shell
 $ docker build -t ts_selenium/appium-1.6.5 .
 ```
 
-#### 1.1.1.2. Complete build
+#### 1.1.2.2. Complete build
 
 ```shell
 $ docker build \
@@ -38,8 +54,49 @@ $ docker build \
     .
 ```
 
-### 1.1.2. Run
-#### 1.1.2.1. Run without connection to the Selenium grid
+### 1.1.3. Run
+
+To run correctly, the Appium server needs to be binded to (at least) one Android device. To do this, we need to create an AVD (_Android Virtual Device_) through the Android Studio command line interface or use a dockerize device.
+
+#### 1.1.3.1. With AVD
+
+##### 1.1.3.1.1. Create an AVD
+
+Here, creating an API 24 Android device. The 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
+
+```shell
+$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
+    --filter android-24 --no-ui -a
+$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
+    --filter sys-img-x86_64-android-24 --no-ui -a
+$ echo no | $ANDROID_HOME/tools/bin/avdmanager create avd \
+    -n ts_selenium_android_devices_API24 \
+    -k "system-images;android-24;google_apis_playstore;x86"
+```
+
+or for a more generic form (choose your target and your ABI (_Application Binary Interface_))
+
+```shell
+$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
+    --filter ${TARGET} --no-ui -a
+$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
+    --filter sys-img-${ABI}-${TARGET} --no-ui -a
+$ echo no | $ANDROID_HOME/tools/bin/avdmanager create avd \
+    -n ts_selenium_android_devices_API24 \
+    -k "system-images;${TARGET};google_apis_playstore;${ABI}"
+```
+
+To assume the list of correct API versions, check [this out](https://developer.android.com/about/dashboards/index.html).
+
+##### 1.1.3.1.2. [TODO] Run the AVD to test it
+
+/--> **Content to add ASAP** <--/
+
+#### 1.1.3.2. With Docker 
+
+Check [this README](./devices/README.md).
+
+#### 1.1.3.3. Run without connection to the Selenium grid
 
 ```shell
 $ docker run -it \
@@ -47,7 +104,7 @@ $ docker run -it \
     ts_selenium/appium-1.6.5
 ```
 
-#### 1.1.2.2. Run with connection to the Selenium grid
+#### 1.1.3.4. Run with connection to the Selenium grid
 
 ```shell
 $ docker run -it \

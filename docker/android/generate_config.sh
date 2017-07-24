@@ -40,7 +40,7 @@ devices=($(adb devices | grep -oP "\K(\w+)(?=\sdevice(\W|$))"))
 function create_capabilities() {
   capabilities=""
   for name in ${devices[@]}; do
-    os_version="$(adb -s emulator-$name shell getprop ro.build.version.release | tr -d '\r')"
+    os_version="$(adb -s $name shell getprop ro.build.version.release | tr -d '\r')"
     capabilities+=$(cat <<_EOF
 {
     "platform": "$PLATFORM_NAME",
