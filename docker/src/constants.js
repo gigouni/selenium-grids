@@ -4,7 +4,7 @@
  *
  * @since 0.0.1.
  * @author Nicolas GIGOU.
- * @description A config file to mutualise all the constants into a single file. Improve the maintainability.
+ * @description A config file to pool all the constants into a single file. Improve the maintainability.
  *
  * *-*-*-*-*-*-*
  * How to use it
@@ -19,7 +19,6 @@
  * --------------------------------------------------------------------------------------------------------------
  */
 // ------------------------------------------------------------- //
-
 //                       Hub and nodes                           //
 // ------------------------------------------------------------- //
 const _FIREFOX_HOST = 'http://172.17.0.5';

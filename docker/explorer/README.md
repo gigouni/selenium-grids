@@ -1,8 +1,8 @@
-# 1. Edge
+# 1. Internet Explorer
 
 <!-- TOC -->
 
-- [1. Edge](#1-edge)
+- [1. Internet Explorer](#1-internet-explorer)
     - [1.1. tl;dr](#11-tldr)
     - [1.2. Getting started](#12-getting-started)
     - [1.3. The virtual machine](#13-the-virtual-machine)
@@ -17,42 +17,42 @@
     - [1.4. Selenium hub](#14-selenium-hub)
         - [1.4.1. Java dependencies](#141-java-dependencies)
         - [1.4.2. Run the hub](#142-run-the-hub)
-    - [1.5. Selenium Edge node](#15-selenium-edge-node)
+    - [1.5. Selenium Internet Explorer node](#15-selenium-internet-explorer-node)
     - [1.6. Tests](#16-tests)
         - [1.6.1. Settings](#161-settings)
         - [1.6.2. Run them all!](#162-run-them-all)
 
 <!-- /TOC -->
 
-Aim of this part: Run a Edge node and connect it to a Selenium grid.
-If you're interest by Internet Explorer, the content of this README is almost the same, except for the node configuration.
+Aim of this part: Run a Internet Explorer 11 node and connect it to a Selenium grid.
+If you're interest by Edge, the content of this README is almost the same, except for the node configuration.
 
 ## 1.1. tl;dr
 
 1. Create and switch on the Windows VM
 2. Configure the VM
 3. Run the hub
-4. Run the Edge node
+4. Run the Internet Explorer node
 5. Configure the tests
 6. Run the tests
 
 ## 1.2. Getting started
 
-To plug a Edge node to a Selenium grid, we need to have a Windows environment due to mandatory dependencies. When you're actually working with it, it's not a problem but most of the developers community work with a Linux or Mac distribution. So we need to find alternatives to complete this part of the needs, no matter the host distribution.
+To plug a Internet Explorer node to a Selenium grid, we need to have a Windows environment due to mandatory dependencies. When you're actually working with it, it's not a problem but most of the developers community work with a Linux or Mac distribution. So we need to find alternatives to complete this part of the needs, no matter the host distribution.
 
 For the next part, we're considering you're working on a Linux/Mac distribution. If you're using a Windows, you won't have to follow the first steps but _the configuration of the node may interest you_.
 
 ## 1.3. The virtual machine
 ### 1.3.1. Creation
 
-When you need to work with Windows environment while being on a Linux (or Mac) one, you need to pass by virtual machines manager like VirtualBox. But, how to run VM without virtual environment? Microsoft provides it for you. These free VM are for development use. They are limited by their potential (dependencies, hardware settings, etc...) and by duration. You can only use each free VM for 90 days. But if you create a snapshot during the first days of the trial, you will be able to reset it regularly to a stable version.
+When you need to work with Windows environment while being on a Linux (or Mac) one, you need to pass by virtual machines manager like VirtualBox (comes with a CLI tool, _VBOX Manage_). But, how to run VM without virtual environment? Microsoft provides it for you. These free VM are for development use. They are limited by their potential (dependencies, hardware settings, etc...) and by duration. You can only use each free VM for 90 days. But if you create a snapshot during the first days of the trial, you will be able to reset it regularly to a stable version.
 
 To download it, you can [go to the microsoft website](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) and choose your environment settings. Let's go for 
 
-* Virtual machine: Microsoft Edge on Win10 (x64) Stable (15.15063)
+* Virtual machine: IE11 on Win81 (x86) __and__ IE11 on Win7 (x86)
 * Select platform: VirtualBox
 
-to get your ZIP file. Once you've installed it through the VirtualBox UI, you will be able to run it and configure it. 
+to get your ZIP file. Once you've installed it through the VirtualBox UI, you will be able to run it and configure it. Here, we've chosen two OS to assume the behavior of our application, no matter the version of Windows (as a kind of example).
 
 ### 1.3.2. Configuration
 #### 1.3.2.1. Hardware
@@ -116,17 +116,17 @@ _Steps important in this script:_
 
 * Check if Java is not already installed as a command
 * If true, check if the JAR file exists
-* If true, open the Edge browser to the hub IP address
+* If true, open the Internet Explorer browser to the hub IP address
 * Run the JAR file to run the Selenium hub
 
-## 1.5. Selenium Edge node
+## 1.5. Selenium Internet Explorer node
 
-Finally, the third and last script, _run_step_03_node_edge.ps1_, is to run the Edge node.
+Finally, the third and last script, _run_step_03_node_ie11.ps1_, is to run the Internet Explorer node.
 
 _Steps important in this script:_
 
 * Check if Java is not already installed as a command
-* If true, run the Edge node
+* If true, run the Internet Explorer node
 
 ## 1.6. Tests
 ### 1.6.1. Settings
