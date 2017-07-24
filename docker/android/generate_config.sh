@@ -26,11 +26,11 @@ if [ -z "$BROWSER_NAME" ]; then
   BROWSER_NAME="android"
 fi
 
-if [ -z "$UDID" ]; then
+if [ -z "$UUID" ]; then
   # docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}' --> Get the ID of the device container
   # docker exec -it <container-name-or-id> bash --> Execute a command within a running container 
-  # ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}' --> Get the UDID of the emulated device
-  UDID=`docker exec -it $(docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
+  # ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}' --> Get the UUID of the emulated device
+  UUID=`docker exec -it $(docker ps | grep "thedrhax/android-avd" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'`
 fi
 
 #Get device names
@@ -48,7 +48,7 @@ function create_capabilities() {
     "version": "$os_version",
     "browserName": "$BROWSER_NAME",
     "deviceName": "$name",
-    "udid": "$UDID",
+    "uuid": "$UUID",
     "maxInstances": 1
   }
 _EOF

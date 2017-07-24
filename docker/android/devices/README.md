@@ -52,7 +52,7 @@ You may already have the Dockerfile and the mandatory files if you're able to re
 #### 1.2.1.1. Basic build
 
 ```shell
-$ docker build -t ts_selenium/android_device .
+$ docker build -t gigouni/android_device .
 ```
 
 #### 1.2.1.2. Complete build
@@ -63,14 +63,14 @@ $ docker build \
     --build-arg _TARGET=android-22 \
     --build-arg _NAME=Docker_AVD \
     --build-arg _EMULATOR=64-arm \
-    -t ts_selenium/android_device \
+    -t gigouni/android_device \
     .
 ```
 
 ### 1.2.2. Run
 
 ```shell
-$ docker run -it --rm --device /dev/kvm ts_selenium/android_device
+$ docker run -it --rm --device /dev/kvm gigouni/android_device
 ```
 
 _Note:_ The _--device /dev/kvm_ attribute is mandatory to pass the KVM from the host machine to the android device.
@@ -82,7 +82,7 @@ If you're encountering some troubles running or building your Docker image, the 
 
 ```shell
 $ # Connect to the device container
-$ docker exec -it $(dops | grep "ts_selenium/android_device" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
+$ docker exec -it $(docker ps | grep "gigouni/android_device" | head -n1 | awk '{print $1}') bash && ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
 $
 $ # Move to the logs folder
 $ cd /var/log/supervisor

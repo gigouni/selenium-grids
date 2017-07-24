@@ -40,7 +40,7 @@ at the end of our ~/.bashrc to simplify the commands. In case you're not able to
 #### 1.1.2.1. Basic build
 
 ```shell
-$ docker build -t ts_selenium/appium-1.6.5 .
+$ docker build -t gigouni/appium-1.6.5 .
 ```
 
 #### 1.1.2.2. Complete build
@@ -50,13 +50,13 @@ $ docker build \
     --build-arg SDK_VERSION=25.2.3 \
     --build-arg ANDROID_BUILD_TOOLS_VERSION=25.0.3 \
     --build-arg APPIUM_VERSION=1.6.5 \
-    -t ts_selenium/appium-1.6.5 \
+    -t gigouni/appium-1.6.5 \
     .
 ```
 
 ### 1.1.3. Run
 
-To run correctly, the Appium server needs to be binded to (at least) one Android device. To do this, we need to create an AVD (_Android Virtual Device_) through the Android Studio command line interface or use a dockerize device.
+To run correctly, the Appium server needs to be bind to (at least) one Android device. To do this, we need to create an AVD (_Android Virtual Device_) through the Android Studio command line interface or use a dockerize device.
 
 #### 1.1.3.1. With AVD
 
@@ -65,24 +65,20 @@ To run correctly, the Appium server needs to be binded to (at least) one Android
 Here, creating an API 24 Android device. The 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
 
 ```shell
-$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
-    --filter android-24 --no-ui -a
-$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
-    --filter sys-img-x86_64-android-24 --no-ui -a
-$ echo no | $ANDROID_HOME/tools/bin/avdmanager create avd \
-    -n ts_selenium_android_devices_API24 \
+$ echo y | sdkmanager update sdk --filter android-24 --no-ui -a
+$ echo y | sdkmanager update sdk --filter sys-img-x86_64-android-24 --no-ui -a
+$ echo no | avdmanager create avd \
+    -n gigouni_android_devices_API24 \
     -k "system-images;android-24;google_apis_playstore;x86"
 ```
 
 or for a more generic form (choose your target and your ABI (_Application Binary Interface_))
 
 ```shell
-$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
-    --filter ${TARGET} --no-ui -a
-$ echo y | $ANDROID_HOME/tools/bin/sdkmanager update sdk \
-    --filter sys-img-${ABI}-${TARGET} --no-ui -a
-$ echo no | $ANDROID_HOME/tools/bin/avdmanager create avd \
-    -n ts_selenium_android_devices_API24 \
+$ echo y | sdkmanager update sdk --filter ${TARGET} --no-ui -a
+$ echo y | sdkmanager update sdk --filter sys-img-${ABI}-${TARGET} --no-ui -a
+$ echo no | avdmanager create avd \
+    -n gigouni_android_devices_API24 \
     -k "system-images;${TARGET};google_apis_playstore;${ABI}"
 ```
 
@@ -94,14 +90,18 @@ To assume the list of correct API versions, check [this out](https://developer.a
 
 #### 1.1.3.2. With Docker 
 
-Check [this README](./devices/README.md).
+The interest of Docker was to be able to whenever dispose of a ready Android device. It's an easy tool and improve the deployment process.
+
+But before continuing, you need to know that there are some cons passing by Docker for the device emulation. First of all, the emulated device is _emulated_. It means that  it's already wrap within a virtual machine, the AVD manager of Android Studio. The second argument is about data access. If we need to access data for the contained Appium server from the contained device, the Appium server won't be able to connect to the device (not the same "system environment").
+
+If you still want to test it, check [this README](./devices/README.md).
 
 #### 1.1.3.3. Run without connection to the Selenium grid
 
 ```shell
 $ docker run -it \
     --rm \
-    ts_selenium/appium-1.6.5
+    gigouni/appium-1.6.5
 ```
 
 #### 1.1.3.4. Run with connection to the Selenium grid
@@ -116,8 +116,8 @@ $ docker run -it \
     -e SELENIUM_HOST=172.17.0.2 \
     -e SELENIUM_PORT=4444 \
     -e BROWSER_NAME=android \
-    -e UDID=254789fc-0410-4b35-9108-12ed647bbad4 \
-    ts_selenium/appium-1.6.5
+    -e UUID=254789fc-0410-4b35-9108-12ed647bbad4 \
+    gigouni/appium-1.6.5
 ```
 
 To get the IP address of your Selenium hub, run an instance of the Selenium
