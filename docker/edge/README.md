@@ -92,8 +92,16 @@ $ Set-ExecutionPolicy Bypass
 To understand why using _Bypass_ execution policy, follow [this technical note](https://4sysops.com/archives/powershell-bypass-executionpolicy-to-run-downloaded-scripts/).
 
 ### 1.3.3. Turning on
+
+To be sure having all your previous configuration correctly set, you can reboot your VM and check everything. If you didn't do it yet, __I strongly recommand you to snapshot your current version of the VM__ to bessure having a backup in case of issues.
+
 ## 1.4. Selenium hub
 ### 1.4.1. Java dependencies
+
+To run the Selenium hub, we will first need to fill the Java dependencies because we're using a JAR file. JAR files are Java archive, containing a set of functions and to access to them, we need to set our system to follow the good configuration. Don't worry, the scripts will do it for it. For this step, you just need to run the first script, _run_step_01_java.ps1_.
+
+These scripts are Powershell ones to have a better bunch of scripting functions. Being sure that these scripts are for Windows environment make them perfectly suitable.
+
 ### 1.4.2. Run the hub
 ## 1.5. Selenium Edge node
 ## 1.6. Tests
