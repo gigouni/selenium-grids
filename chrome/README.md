@@ -1,6 +1,6 @@
 # 1. Chrome
 
-A Dockerfile to dockerize any version in {stable, unstable, beta} of Google Chrome and push it within a Selenium grid for automatication tests
+A Dockerfile to dockerize any version in {stable, unstable, beta} of Google Chrome and push it within a Selenium grid for automation tests.
 
 <!-- TOC -->
 

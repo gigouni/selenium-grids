@@ -7,6 +7,7 @@ A POC about the way of manipulate the Selenium grids for several platforms (Edge
 - [1. Selenium grids & Docker](#1-selenium-grids--docker)
     - [1.1. What it is?](#11-what-it-is)
     - [1.2. The objectives](#12-the-objectives)
+    - [1.3. Authors](#13-authors)
 
 <!-- /TOC -->
 
@@ -33,3 +34,8 @@ The support should be resolved for
 * Internet Explorer 11
 * Android
 * iOS
+
+## 1.3. Authors
+
+* [SeleniumHQ](https://github.com/SeleniumHQ/) - **initial work**
+* [Nicolas GIGOU](https://github.com/gigouni/) - **implementation for Firefox, Chrome, Android, iOS, Safari, Edge, IE11**

@@ -36,6 +36,13 @@ If you're interest by Edge, the content of this README is almost the same, excep
 5. Configure the tests
 6. Run the tests
 
+```shell
+$ # After having turned on the machine
+$ .\run_01_step_java.ps1
+$ .\run_02_step_hub.ps1
+$ .\run_03_step_node_ie11.ps1
+```
+
 ## 1.2. Getting started
 
 To plug a Internet Explorer node to a Selenium grid, we need to have a Windows environment due to mandatory dependencies. When you're actually working with it, it's not a problem but most of the developers community work with a Linux or Mac distribution. So we need to find alternatives to complete this part of the needs, no matter the host distribution.

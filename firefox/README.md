@@ -1,50 +1,83 @@
-# Firefox & docker
+# 1. Firefox
 
-A Dockerfile to dockerify any version of Mozilla Firefox and push it within a Selenium grid for automatication tests
+A Dockerfile to dockerize any version of Mozilla Firefox and push it within a Selenium grid for automation tests.
 
 <!-- TOC -->
 
-- [Firefox & docker](#firefox--docker)
-    - [Getting started](#getting-started)
-    - [Authors](#authors)
+- [1. Firefox](#1-firefox)
+    - [1.1. tl;dr](#11-tldr)
+    - [1.2. Getting started](#12-getting-started)
+        - [1.2.1. Build](#121-build)
+            - [1.2.1.1. Basic build](#1211-basic-build)
+            - [1.2.1.2. Complete build](#1212-complete-build)
+        - [1.2.2. Run](#122-run)
+            - [1.2.2.1. Basic run](#1221-basic-run)
+            - [1.2.2.2. Complete run](#1222-complete-run)
 
 <!-- /TOC -->
 
-## Getting started
+## 1.1. tl;dr
 
-Clone the stack
-
+To run everything in a single terminal, use _detached mode_, with the _-d_ argument.
 ```shell
-$ git clone https://github.com/gigouni/selenium-grids
+$ docker build --build-arg FIREFOX_VERSION=YOUR_VERSION -t gigouni/firefoxYOUR_VERSION .
+$ docker run -it -d --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
+$ docker run -it -d --rm --link selenium-hub:hub gigouni/firefoxYOUR_VERSION
 ```
 
-Move to the good folder
+## 1.2. Getting started
+### 1.2.1. Build
+#### 1.2.1.1. Basic build
 
 ```shell
-$ cd selenium-grids/firefox
+$ docker build -t gigouni/firefoxYOUR_VERSION .
 ```
 
-Build a Docker image following your necessary version(s)
+#### 1.2.1.2. Complete build
+
+Build a Docker image following your needed version
 
 ```shell
-$ sudo docker build --build-arg FIREFOX_VERSION=YOUR_VERSION -t test/firefoxYOUR_VERSION .
+$ docker build --build-arg FIREFOX_VERSION=YOUR_VERSION -t gigouni/firefoxYOUR_VERSION .
 ```
+
+__For FF < 48__
+
+_Geckodriver_, the Mozilla Firefox driver, is suitable [since the 48.0](https://github.com/mozilla/geckodriver/issues/85). Before this version, you need to pass by [Marionette](https://developer.mozilla.org/fr/docs/Mozilla/QA/Marionette). If you're using Selenium > 3.0, Marionette is already include within the JAR file. To build images for FF < 48, please refer to [this folder instead](./before_v48/Dockerfile).
+
+### 1.2.2. Run
 
 Run your Selenium hub (_if it's not already running_)
 
 ```shell
-$ sudo docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
+$ docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
 ```
 
-Run your new Firefox image (_WARNING: when choosing your Firefox version, please prefer [48+ due to compatibility support](https://github.com/mozilla/geckodriver/issues/85)_)
+#### 1.2.2.1. Basic run
+
+Run your new Firefox image
 
 ```shell
-$ sudo docker run -it --rm --link my-selenium-hub:hub test/firefoxYOUR_VERSION
+$ docker run -it --rm --link my-selenium-hub:hub gigouni/firefoxYOUR_VERSION
 ```
 
-Check if it's working [here](http://localhost:4444/grid/console). Enjoy!
+#### 1.2.2.2. Complete run
 
-## Authors
+```shell
+$ docker run -it \
+    --rm \
+    -e NODE_MAX_INSTANCES=1 \
+    -e NODE_MAX_SESSION=1 \
+    -e NODE_REGISTER_CYCLE=5000 \
+    -e NODE_PORT=5556 \
+    --link selenium-hub:hub \
+    gigouni/firefoxYOUR_VERSION
+```
 
-* [SeleniumHQ](https://github.com/SeleniumHQ/) - **initial work**
-* [Nicolas GIGOU](https://github.com/gigouni/) - **implementation for Firefox, Chrome, Android, iOS, Safari, Edge, IE11**
+Check if it's working [here](http://localhost:4444/grid/console). 
+Enjoy!
+
+_Note:_
+
+* The usage of the _link_ argument is deprecated. You shall think about edit it ASAP.
+* Here, _NODE_ stands for the Selenium _node_, not NodeJS.
