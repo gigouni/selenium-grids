@@ -17,6 +17,9 @@
             - [1.2.3.2. Device within Docker](#1232-device-within-docker)
             - [1.2.3.3. Run without connection to the Selenium grid](#1233-run-without-connection-to-the-selenium-grid)
             - [1.2.3.4. Run with connection to the Selenium grid](#1234-run-with-connection-to-the-selenium-grid)
+        - [1.2.4. Tests](#124-tests)
+            - [1.2.4.1. Settings](#1241-settings)
+            - [1.2.4.2. Run them all!](#1242-run-them-all)
 
 <!-- /TOC -->
 
@@ -40,6 +43,32 @@ $ # Device emulator
 $ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
 $
 $ # Appium server
+$ docker build -t gigouni/appium-1.6.5 .
+$
+$ # Download Android system images and create AVD
+$ echo y | sdkmanager update sdk --filter android-24 --no-ui -a
+$ echo y | sdkmanager update sdk --filter sys-img-x86_64-android-24 --no-ui -a
+$ echo no | avdmanager create avd \
+    -n gigouni_android_devices_API24 \
+    -k "system-images;android-24;google_apis_playstore;x86"
+$
+$ # Run AVD
+$ emulator -avd gigouni_android_devices_API24 -gpu host
+$
+$ # Run Appium server
+$ docker run -it \
+    --rm \
+    -e CONNECT_TO_GRID=true \
+    -e PLATFORM_NAME=Android \
+    -e APPIUM_HOST=127.0.0.1 \
+    -e APPIUM_PORT=4723 \
+    -e SELENIUM_HOST=172.17.0.2 \
+    -e SELENIUM_PORT=4444 \
+    -e BROWSER_NAME=android \
+    gigouni/appium-1.6.5
+$
+$ # Run tests
+$ mocha --timeout 30000 ../src/tests.js
 ```
 
 ## 1.2. Getting started
@@ -196,7 +225,7 @@ If _ll_ is not recognized as a command, your 'll' alias might not be set. Just u
 $ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
 ```
 
-You can check the way it's handle in the _./generate_config.sh_ file.
+You can check the way it's handled in the _./generate_config.sh_ file.
 
 #### 1.2.3.2. Device within Docker 
 
@@ -247,3 +276,26 @@ $ docker inspect $(docker ps | grep "selenium/hub" | awk '{print $1}') | grep "\
 
 _Note:_ If this command returns _""docker inspect" requires at least 1 argument(s)."_,
 you may haven't run the Selenium hub yet.
+
+### 1.2.4. Tests
+#### 1.2.4.1. Settings
+
+The main aim of the Selenium grid is to be able to run tests on several platforms (browsers, operating systems). In that case, just as an example, I choose to test a website we all know, Google. The test is simple: on the Google homepage, waits until the page is fully loaded, searches the keyword 'google', then press "Search" button, clicks on the first link to return on the Google homepage.
+
+As a test tool, I subjectively decided to use [MochaJS](https://mochajs.org/).
+
+Now, we need to set the value of the constants to point to the Selenium grid. To achieve it, go in the _src/_ folder and check for the _constants.js_ file. The Google part is just for some indications and can be removed to be replaced by your own tests.
+
+Each node has its own IP address but plugging to the hub is enough, the hub broadcasts the node call depending on the chosen capabilities.
+
+#### 1.2.4.2. Run them all!
+
+In my case, I just need to run the tests by running this command in the _src/_ folder.
+
+```shell
+$ mocha --timeout 30000 tests.js
+```
+
+_Note:_
+
+The timeout value here is necessary to avoid that your tests ask for the end before the real end of the tests. It this command crashes, increase the value. Depending on your test, you can try to decrease it but be careful. Even if you're running twice the same test in the exact same conditions, you're not sure having the same execution time.

@@ -1,10 +1,10 @@
-# 1. Chrome & docker
+# 1. Chrome
 
 A Dockerfile to dockerize any version in {stable, unstable, beta} of Google Chrome and push it within a Selenium grid for automatication tests
 
 <!-- TOC -->
 
-- [1. Chrome & docker](#1-chrome--docker)
+- [1. Chrome](#1-chrome)
     - [1.1. tl;dr](#11-tldr)
     - [1.2. Getting started](#12-getting-started)
         - [1.2.1. Build](#121-build)
