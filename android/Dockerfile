@@ -1,6 +1,7 @@
 FROM ubuntu:16.04
 
 LABEL author "Srinivasan Sekar <srinivasan.sekar1990@gmail.com>"
+LABEL editor "Nicolas Gigou <nicolas.gigou@telecomsante.com>"
 LABEL maintainer "Nicolas Gigou <nicolas.gigou@telecomsante.com>"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -80,17 +81,18 @@ ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
 ARG APPIUM_VERSION=1.6.5
 ENV APPIUM_VERSION=${APPIUM_VERSION}
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - 
-RUN apt-get -qqy install nodejs
-RUN npm install -g gulp 
-RUN npm install -g appium-doctor
-RUN appium-doctor 
-RUN npm install -g appium@${APPIUM_VERSION} --no-shrinkwrap --unsafe-perm 
-RUN npm cache clean --force 
-RUN apt-get remove --purge -y npm 
-RUN apt-get autoremove --purge -y 
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
-RUN apt-get clean
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    apt-get -qqy install nodejs && \
+    echo Y | apt install build-essential && \
+    npm install -g gulp appium-gulp-plugins && \
+    npm install -g appium-doctor && \
+    appium-doctor && \
+    npm install -g appium@${APPIUM_VERSION} --no-shrinkwrap --unsafe-perm && \
+    npm cache clean --force && \
+    apt-get remove --purge -y npm && \
+    apt-get autoremove --purge -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    apt-get clean
 
 #==================================
 # Fix Issue with timezone mismatch
@@ -113,8 +115,8 @@ COPY \
   entry_point.sh \
   generate_config.sh \
     /root/
-RUN chmod +x /root/entry_point.sh
-RUN chmod +x /root/generate_config.sh
+RUN chmod +x /root/entry_point.sh && \
+    chmod +x /root/generate_config.sh
 
 #========================================
 # Run xvfb and appium server

@@ -36,18 +36,18 @@ connect to a Selenium grid using its IP address.
 
 ```shell
 $ # Hub
-$ docker run -it --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0-dysprosium
-$ xdg-open http://172.17.0.2:4444/grid/console
+$ docker run -it -d --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0-dysprosium
+$ xdg-open http://172.17.0.2:4444/grid/console &
 $
 $ # Device emulator
-$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
+$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host &
 $
 $ # Appium server
 $ docker build -t gigouni/appium-1.6.5 .
 $
 $ # Download Android system images and create AVD
-$ echo y | sdkmanager update sdk --filter android-24 --no-ui -a
-$ echo y | sdkmanager update sdk --filter sys-img-x86_64-android-24 --no-ui -a
+$ echo y | android update sdk --filter android-24 --no-ui -a
+$ echo y | android update sdk --filter sys-img-x86_64-android-24 --no-ui -a
 $ echo no | avdmanager create avd \
     -n gigouni_android_devices_API24 \
     -k "system-images;android-24;google_apis_playstore;x86"
@@ -56,19 +56,23 @@ $ # Run AVD
 $ emulator -avd gigouni_android_devices_API24 -gpu host
 $
 $ # Run Appium server
+$ APPIUM_HOST=$(adb shell ifconfig | grep "inet addr" | grep -v 127.0.0.1 | awk '{print $2}' | cut -d ":" -f2)
+$ SELENIUM_HOST=$(docker inspect $(docker ps | grep "selenium/hub" | awk '{print $1}') | grep "\"IPAddress\"" | head -n1 | awk '{print $2}' | tr -d \" | tr -d \,)
+$ DEVICE_UUID=$(ll /dev/disk/by-uuid/ | grep dm-1 | awk '{print $9}')
 $ docker run -it \
     --rm \
     -e CONNECT_TO_GRID=true \
     -e PLATFORM_NAME=Android \
-    -e APPIUM_HOST=127.0.0.1 \
+    -e APPIUM_HOST=$APPIUM_HOST \
     -e APPIUM_PORT=4723 \
-    -e SELENIUM_HOST=172.17.0.2 \
+    -e SELENIUM_HOST=$SELENIUM_HOST \
     -e SELENIUM_PORT=4444 \
     -e BROWSER_NAME=android \
+    -e UUID=$DEVICE_UUID \
     gigouni/appium-1.6.5
 $
 $ # Run tests
-$ mocha --timeout 30000 ../src/tests.js
+$ mocha --timeout 30000 ../src/tests_android.js
 ```
 
 ## 1.2. Getting started
@@ -115,8 +119,8 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 Here, creating an API 24 Android device. By example, the 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
 
 ```shell
-$ echo y | sdkmanager update sdk --filter android-24 --no-ui -a
-$ echo y | sdkmanager update sdk --filter sys-img-x86_64-android-24 --no-ui -a
+$ echo y | android update sdk --filter android-24 --no-ui -a
+$ echo y | android update sdk --filter sys-img-x86_64-android-24 --no-ui -a
 $ echo no | avdmanager create avd \
     -n gigouni_android_devices_API24 \
     -k "system-images;android-24;google_apis_playstore;x86"
@@ -125,8 +129,8 @@ $ echo no | avdmanager create avd \
 or for a more generic form (choose your target and your ABI (_Application Binary Interface_))
 
 ```shell
-$ echo y | sdkmanager update sdk --filter ${TARGET} --no-ui -a
-$ echo y | sdkmanager update sdk --filter sys-img-${ABI}-${TARGET} --no-ui -a
+$ echo y | android update sdk --filter ${TARGET} --no-ui --force -a
+$ echo y | android update sdk --filter sys-img-${ABI}-${TARGET} --no-ui --force -a
 $ echo no | avdmanager create avd \
     -n gigouni_android_devices_API24 \
     -k "system-images;${TARGET};google_apis_playstore;${ABI}"
@@ -134,6 +138,18 @@ $ echo no | avdmanager create avd \
 
 To assume the list of correct API versions, check [this out](https://developer.android.com/about/dashboards/index.html).
 For the documentation about ABIs, [check this out](https://developer.android.com/ndk/guides/abis.html).
+
+You might be confronted to a problem while trying to update your SDK with previous Android version like
+
+```shell
+$ Filter sys-img-${your-abi}-${your-target} not supported
+```
+
+To assume the exact list of supported filters, use this command.
+
+```shell
+$ android list sdk [--all]
+```
 
 ##### 1.2.3.1.2. Run the AVD (and test its existence btw)
 
@@ -293,7 +309,7 @@ Each node has its own IP address but plugging to the hub is enough, the hub broa
 In my case, I just need to run the tests by running this command in the _src/_ folder.
 
 ```shell
-$ mocha --timeout 30000 tests.js
+$ mocha --timeout 30000 tests_android.js
 ```
 
 _Note:_
