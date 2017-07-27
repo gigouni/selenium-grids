@@ -43,7 +43,7 @@ $ # Device emulator
 $ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host &
 $
 $ # Appium server
-$ docker build -t gigouni/appium-1.6.5 .
+$ ./build.sh
 $
 $ # Download Android system images and create AVD
 $ echo y | android update sdk --filter android-24 --no-ui -a
@@ -52,24 +52,8 @@ $ echo no | avdmanager create avd \
     -n gigouni_android_devices_API24 \
     -k "system-images;android-24;google_apis_playstore;x86"
 $
-$ # Run AVD
-$ emulator -avd gigouni_android_devices_API24 -gpu host
-$
 $ # Run Appium server
-$ APPIUM_HOST=$(adb shell ifconfig | grep "inet addr" | grep -v 127.0.0.1 | awk '{print $2}' | cut -d ":" -f2)
-$ SELENIUM_HOST=$(docker inspect $(docker ps | grep "selenium/hub" | awk '{print $1}') | grep "\"IPAddress\"" | head -n1 | awk '{print $2}' | tr -d \" | tr -d \,)
-$ DEVICE_UUID=$(ll /dev/disk/by-uuid/ | grep dm-1 | awk '{print $9}')
-$ docker run -it \
-    --rm \
-    -e CONNECT_TO_GRID=true \
-    -e PLATFORM_NAME=Android \
-    -e APPIUM_HOST=$APPIUM_HOST \
-    -e APPIUM_PORT=4723 \
-    -e SELENIUM_HOST=$SELENIUM_HOST \
-    -e SELENIUM_PORT=4444 \
-    -e BROWSER_NAME=android \
-    -e UUID=$DEVICE_UUID \
-    gigouni/appium-1.6.5
+$ ./run.sh
 $
 $ # Run tests
 $ mocha --timeout 30000 ../src/tests_android.js

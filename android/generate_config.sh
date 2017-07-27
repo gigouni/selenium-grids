@@ -12,7 +12,19 @@ if [ -z "$SELENIUM_HOST" ];   then SELENIUM_HOST="172.17.0.2"; fi
 if [ -z "$SELENIUM_PORT" ];   then SELENIUM_PORT=4444; fi
 if [ -z "$BROWSER_NAME" ];    then BROWSER_NAME="android"; fi
 if [ -z "$MAX_INSTANCES" ];   then MAX_INSTANCES=1; fi
-if [ -z "$DEVICE_NAME" ];     then echo "Empty device name for the device Android"; fi
+
+# The device management is way more complex to handle dependings on the thrown error
+if [ -z "$DEVICE_NAME" ];     then 
+  echo "Empty device name for the device Android. The script won't be able to continue"
+  exit 1
+elif [ "$DEVICE_NAME" == "*" ] ; then
+  echo "The ADB server failed running and need to restart. It will do it by itself right now"
+  DEVICE_NAME="$(adb devices | head -n2 | tail -n1 | awk '{print $1}')"
+  echo "Caught $DEVICE_NAME as the device name"
+elif ["$DEVICE_NAME" == "error: device offline"] ; then
+  echo "The device crashes and need to restart. The script won't be able to continue"
+  exit 1
+fi
 
 nodeconfig=$(cat <<_EOF
 {

@@ -10,6 +10,7 @@ A Dockerfile to dockerize any version of Mozilla Firefox and push it within a Se
         - [1.2.1. Build](#121-build)
             - [1.2.1.1. Basic build](#1211-basic-build)
             - [1.2.1.2. Complete build](#1212-complete-build)
+            - [1.2.1.3. Example with Firefox 52.2.1-ESR](#1213-example-with-firefox-5221-esr)
         - [1.2.2. Run](#122-run)
             - [1.2.2.1. Basic run](#1221-basic-run)
             - [1.2.2.2. Complete run](#1222-complete-run)
@@ -27,6 +28,9 @@ $ docker run -it -d --rm --link selenium-hub:hub gigouni/firefoxYOUR_VERSION
 
 ## 1.2. Getting started
 ### 1.2.1. Build
+
+You can build Docker images of Firefox using the version you need [from the list here](https://ftp.mozilla.org/pub/firefox/releases/).
+
 #### 1.2.1.1. Basic build
 
 ```shell
@@ -39,6 +43,23 @@ Build a Docker image following your needed version
 
 ```shell
 $ docker build --build-arg FIREFOX_VERSION=YOUR_VERSION -t gigouni/firefoxYOUR_VERSION .
+```
+
+#### 1.2.1.3. Example with Firefox 52.2.1-ESR
+
+```shell
+$ # Build the Firefox 52.2.1-ESR Docker image
+$ docker build \
+    --build-arg FIREFOX_VERSION=52.2.1esr \
+    -t gigouni/firefox52.2.1-esr \
+    .
+
+$ # Run the gigouni/firefox52.2.1-esr image
+$ docker run \
+    -it \
+    --rm \
+    --link my-selenium-hub:hub \
+    gigouni/firefox52.2.1-esr
 ```
 
 __For FF < 48__
