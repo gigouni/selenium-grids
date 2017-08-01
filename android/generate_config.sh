@@ -58,5 +58,6 @@ _EOF
 
 echo "Generated capabilities: [$nodeconfig]"
 echo "Generation done"
+echo "The Appium will be started now..."
 
 echo "$nodeconfig" > $node_config_json

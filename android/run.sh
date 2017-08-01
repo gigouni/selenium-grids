@@ -58,9 +58,6 @@ echo "--- The device is running on the $OS_VERSION version of Android"
 MAX_INSTANCES=1
 echo "--- $MAX_INSTANCES instance(s) of the node will be used"
 
-# DEVICE_UUID=$(ls -l /dev/disk/by-uuid/ | grep dm-1 | awk '{print $9}')
-# echo "--- Caught $DEVICE_UUID as the UUID of the Android device"
-
 echo "Connecting..."
 
 docker run -it \

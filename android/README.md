@@ -19,7 +19,7 @@
             - [1.2.3.4. Run with connection to the Selenium grid](#1234-run-with-connection-to-the-selenium-grid)
         - [1.2.4. Tests](#124-tests)
             - [1.2.4.1. Settings](#1241-settings)
-            - [1.2.4.2. Run them all!](#1242-run-them-all)
+            - [1.2.4.2. Run them all](#1242-run-them-all)
 
 <!-- /TOC -->
 
@@ -79,7 +79,8 @@ at the end of our ~/.bashrc to simplify the commands. In case you're not able to
 #### 1.2.2.1. Basic build
 
 ```shell
-$ docker build -t gigouni/appium-1.6.5 .
+$ docker build \
+    -t gigouni/appium-1.6.5 .
 ```
 
 #### 1.2.2.2. Complete build
@@ -134,7 +135,9 @@ Filter sys-img-${your-abi}-${your-target} not supported
 To assume the exact list of supported filters, use this command ([source](https://stackoverflow.com/questions/42460205/truncated-android-sdk-package-paths-from-sdkmanager-cli)).
 
 ```shell
-$ sdkmanager --list --verbose | grep -vP "^Info:|^\s|^$|^done$"
+$ sdkmanager \
+    --list \
+    --verbose | grep -vP "^Info:|^\s|^$|^done$"
 ```
 
 You can also have a warning like
@@ -266,16 +269,18 @@ $ docker run -it \
     --rm \
     -e CONNECT_TO_GRID=true \
     -e PLATFORM_NAME=Android \
-    -e APPIUM_HOST=127.0.0.1 \
+    -e APPIUM_HOST=10.0.2.15 \
     -e APPIUM_PORT=4723 \
     -e SELENIUM_HOST=172.17.0.2 \
     -e SELENIUM_PORT=4444 \
     -e BROWSER_NAME=android \
-    -e UUID=254789fc-0410-4b35-9108-12ed647bbad4 \
+    -e DEVICE_NAME=emulator-5554 \
+    -e OS_VERSION=4.1.2 \
+    -e MAX_INSTANCES=1 \
     gigouni/appium-1.6.5
 ```
 
-These values are the default one, except for the UUID. It's just to show you the expected format of a UUID (_Universal Unique Identifier_). If you provide a false UUID, the Appium server won't be able to connect to the device and to run the tests. Here, the UUID environment variable is __only__ if you want to force a specific device.
+To get another correct example, please refer to the [./run.sh script](./run.sh) in this folder.
 
 To get the IP address of your Selenium hub, run an instance of the hub
 image and use the next command
@@ -284,16 +289,17 @@ image and use the next command
 $ docker inspect $(docker ps | grep "selenium/hub" | awk '{print $1}') | grep "\"IPAddress\"" | head -n1 | awk '{print $2}' | tr -d \" | tr -d \,
 ```
 
-* _docker ps | grep "selenium/hub" | awk '{print $1}'_ -> Get container ID
-* _docker inspect_ -> Get properties of the container
-* _head -n1_ -> Get the first line of IPAddress (it's given twice)
-* _awk '{print $2}'_ -> Only catch the IP address without the label
-* _tr -d \" | tr -d \,_ -> Remove the boring special characters
+- _docker ps | grep "selenium/hub" | awk '{print $1}'_ -> Get container ID
+- _docker inspect_ -> Get properties of the container
+- _head -n1_ -> Get the first line of IPAddress (it's given twice)
+- _awk '{print $2}'_ -> Only catch the IP address without the label
+- _tr -d \" | tr -d \,_ -> Remove the boring special characters
 
 _Note:_ If this command returns _""docker inspect" requires at least 1 argument(s)."_,
 you may haven't run the Selenium hub yet.
 
 ### 1.2.4. Tests
+
 #### 1.2.4.1. Settings
 
 The main aim of the Selenium grid is to be able to run tests on several platforms (browsers, operating systems). In that case, just as an example, I choose to test a website we all know, Google. The test is simple: on the Google homepage, waits until the page is fully loaded, searches the keyword 'google', then press "Search" button, clicks on the first link to return on the Google homepage.
@@ -304,7 +310,7 @@ Now, we need to set the value of the constants to point to the Selenium grid. To
 
 Each node has its own IP address but plugging to the hub is enough, the hub broadcasts the node call depending on the chosen capabilities.
 
-#### 1.2.4.2. Run them all!
+#### 1.2.4.2. Run them all
 
 In my case, I just need to run the tests by running this command in the _src/_ folder.
 

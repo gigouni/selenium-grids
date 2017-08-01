@@ -20,12 +20,12 @@ test.describe('Work with REMOTE URL', () => {
             .withCapabilities(webdriver.Capabilities.android())
             .build();
         driver.get(CONSTANTS.GOOGLE_URL);
-        /*driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
-        driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_ID)).click();
+        /*driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_ID)).click();
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_SEARCH_TITLE));
         driver.wait(until.elementLocated(By.tagName(CONSTANTS.GOOGLE_RES_LINK))).click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));*/
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE)); */
         driver.quit();
     });
 });
