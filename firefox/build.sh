@@ -7,5 +7,5 @@
 # THE BUILD PHASE WILL BE AUTOMATICALLY DONE
 # ===============================================================
 docker build \
-    -t gigouni/firefox_latest \
+    -t gigouni/firefox53 \
     .

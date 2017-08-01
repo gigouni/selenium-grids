@@ -8,6 +8,6 @@ docker run \
     -it \
     --rm \
     --link selenium-hub:hub \
-    gigouni/firefox_latest
+    gigouni/firefox53
     
 echo "Closing Firefox node"
