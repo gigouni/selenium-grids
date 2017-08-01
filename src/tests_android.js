@@ -12,21 +12,20 @@ let test = require('selenium-webdriver/testing');
 // ------------------------------------------------------------- //
 test.describe('Work with REMOTE URL', () => {
 
-    var driver;
+    let driver;
 
     test.it('should redirect to Google', () => {
         driver = new webdriver.Builder()
-            // .usingServer(CONSTANTS.SELENIUM_HUB)
-            .usingServer(CONSTANTS.ANDROID_NODE)
+            .usingServer(CONSTANTS.SELENIUM_HUB)
             .withCapabilities(webdriver.Capabilities.android())
             .build();
         driver.get(CONSTANTS.GOOGLE_URL);
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        /*driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
         driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_ID)).click();
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_SEARCH_TITLE));
         driver.wait(until.elementLocated(By.tagName(CONSTANTS.GOOGLE_RES_LINK))).click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));*/
         driver.quit();
     });
 });

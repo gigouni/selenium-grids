@@ -75,6 +75,7 @@ PATH=$PATH:$ANDROID_HOME/tools/bin/ ; export PATH
 at the end of our ~/.bashrc to simplify the commands. In case you're not able to do it, just replace the commands by their absolute path.
 
 ### 1.2.2. Build
+
 #### 1.2.2.1. Basic build
 
 ```shell
@@ -100,24 +101,25 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 
 ##### 1.2.3.1.1. Create an AVD
 
-Here, creating an API 24 Android device. By example, the 'echo no' is to avoid human interaction with the question "Do you wish to create a custom hardware profile? [no]".
+Here, creating an API 24 Android device. These operations can be quite long so don't be surprised for not having an instant response. Once done, you'll receive a _done_ output.
 
 ```shell
-$ echo y | android update sdk --filter android-24 --no-ui -a
-$ echo y | android update sdk --filter sys-img-x86_64-android-24 --no-ui -a
-$ echo no | avdmanager create avd \
+$ echo no | sdkmanager "system-images;android-24;google_apis;x86"
+$ avdmanager create avd \
     -n gigouni_android_devices_API24 \
-    -k "system-images;android-24;google_apis_playstore;x86"
+    -k "system-images;android-24;google_apis;x86" \
+    -f
 ```
 
 or for a more generic form (choose your target and your ABI (_Application Binary Interface_))
 
 ```shell
-$ echo y | android update sdk --filter ${TARGET} --no-ui --force -a
-$ echo y | android update sdk --filter sys-img-${ABI}-${TARGET} --no-ui --force -a
+$ echo no | sdkmanager "system-images;${TARGET};${IMG_TYPE};${ABI}"
 $ echo no | avdmanager create avd \
-    -n gigouni_android_devices_API24 \
-    -k "system-images;${TARGET};google_apis_playstore;${ABI}"
+    -n "gigouni_android_devices_API${TARGET}" \
+    -k "system-images;${TARGET};${IMG_TYPE};${ABI}" \
+    -c 100M \
+    -f
 ```
 
 To assume the list of correct API versions, check [this out](https://developer.android.com/about/dashboards/index.html).
@@ -126,14 +128,28 @@ For the documentation about ABIs, [check this out](https://developer.android.com
 You might be confronted to a problem while trying to update your SDK with previous Android version like
 
 ```shell
-$ Filter sys-img-${your-abi}-${your-target} not supported
+Filter sys-img-${your-abi}-${your-target} not supported
 ```
 
-To assume the exact list of supported filters, use this command.
+To assume the exact list of supported filters, use this command ([source](https://stackoverflow.com/questions/42460205/truncated-android-sdk-package-paths-from-sdkmanager-cli)).
 
 ```shell
-$ android list sdk [--all]
+$ sdkmanager --list --verbose | grep -vP "^Info:|^\s|^$|^done$"
 ```
+
+You can also have a warning like
+
+```shell
+Warning: File /home/gigouni/.android/repositories.cfg could not be loaded.
+```
+
+It's totally skippable but if it's annoying you, create it.
+
+```shell
+touch /home/gigouni/.android/repositories.cfg
+```
+
+More info [here](https://askubuntu.com/questions/885658/android-sdk-repositories-cfg-could-not-be-loaded).
 
 ##### 1.2.3.1.2. Run the AVD (and test its existence btw)
 
@@ -148,7 +164,7 @@ If you want to check the existence of a specific AVD, you can use
 ```shell
 $ # Generic form
 $ avdmanager list avd | grep <avd-name>
-$ 
+
 $ # Example
 $ avdmanager list avd | grep gigouni_android_devices_API24
 ```
