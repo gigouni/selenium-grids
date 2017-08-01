@@ -16,8 +16,8 @@ test.describe('Work with REMOTE URL', () => {
 
     test.it('should redirect to Google', () => {
         driver = new webdriver.Builder()
-            .usingServer(CONSTANTS.SELENIUM_HUB)
-            // .usingServer(CONSTANTS.ANDROID_NODE)
+            // .usingServer(CONSTANTS.SELENIUM_HUB)
+            .usingServer(CONSTANTS.ANDROID_NODE)
             .withCapabilities(webdriver.Capabilities.android())
             .build();
         driver.get(CONSTANTS.GOOGLE_URL);

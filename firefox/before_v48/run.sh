@@ -2,6 +2,8 @@
 #### Description: Script to automatize the default run process
 #### Author: Nicolas GIGOU <nicolas.gigou@telecomsante.com>
 
+./build.sh
+
 docker run \
     -it \
     --rm \

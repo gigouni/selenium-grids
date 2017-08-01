@@ -6,22 +6,25 @@ echo "Generating config..."
 
 if [ -z "$PLATFORM_NAME" ];   then PLATFORM_NAME="Android"; fi
 if [ -z "$OS_VERSION" ];      then echo "Empty OS_VERSION for the device Android"; fi
-if [ -z "$APPIUM_HOST" ];     then APPIUM_HOST="127.0.0.1"; fi
+if [ -z "$APPIUM_HOST" ];     then APPIUM_HOST="10.0.2.15"; fi
 if [ -z "$APPIUM_PORT" ];     then APPIUM_PORT=4723; fi
 if [ -z "$SELENIUM_HOST" ];   then SELENIUM_HOST="172.17.0.2"; fi
 if [ -z "$SELENIUM_PORT" ];   then SELENIUM_PORT=4444; fi
 if [ -z "$BROWSER_NAME" ];    then BROWSER_NAME="android"; fi
 if [ -z "$MAX_INSTANCES" ];   then MAX_INSTANCES=1; fi
 
+# Here why the default value of the Appium host
+# https://developer.android.com/studio/run/emulator-networking.html
+
 # The device management is way more complex to handle dependings on the thrown error
 if [ -z "$DEVICE_NAME" ];     then 
   echo "Empty device name for the device Android. The script won't be able to continue"
   exit 1
-elif [ "$DEVICE_NAME" == "*" ] ; then
+elif [ "$DEVICE_NAME" = "*" ] ; then
   echo "The ADB server failed running and need to restart. It will do it by itself right now"
   DEVICE_NAME="$(adb devices | head -n2 | tail -n1 | awk '{print $1}')"
   echo "Caught $DEVICE_NAME as the device name"
-elif ["$DEVICE_NAME" == "error: device offline"] ; then
+elif [ "$DEVICE_NAME" = "error: device offline" ] ; then
   echo "The device crashes and need to restart. The script won't be able to continue"
   exit 1
 fi

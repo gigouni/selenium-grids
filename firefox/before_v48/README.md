@@ -91,5 +91,5 @@ Enjoy!
 
 _Note:_
 
-* The usage of the _link_ argument is deprecated. You shall think about edit it ASAP.
-* Here, _NODE_ stands for the Selenium _node_, not NodeJS.
+- The usage of the _link_ argument is deprecated. You shall think about edit it ASAP.
+- Here, _NODE_ stands for the Selenium _node_, not NodeJS.
