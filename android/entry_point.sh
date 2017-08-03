@@ -1,9 +1,15 @@
 #!/bin/bash
 
-CMD="xvfb-run appium --log-level debug:error"
+CMD="xvfb-run appium"
 
 if [ ! -z "$CONNECT_TO_GRID" ]; then
+  /root/bridge_connection.sh
   /root/generate_config.sh
+
+
+echo -e "\n==============================================================="
+echo    "                         APPIUM SERVER                         "
+echo    "==============================================================="
   CMD+=" --nodeconfig /root/node_config.json"
 fi
 

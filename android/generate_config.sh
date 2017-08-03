@@ -2,7 +2,9 @@
 
 node_config_json="node_config.json"
 
-echo "Generating config..."
+echo -e "\n==============================================================="
+echo    "                   CONFIG GENERATION SCRIPT                     "
+echo    "==============================================================="
 
 if [ -z "$PLATFORM_NAME" ];   then PLATFORM_NAME="Android"; fi
 if [ -z "$OS_VERSION" ];      then echo "Empty OS_VERSION for the device Android"; fi

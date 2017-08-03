@@ -13,7 +13,7 @@ PLATFORM_NAME="Android"
 echo "--- Adding a node for an $PLATFORM_NAME device"
 
 # The APPIUM here refers to the Android device connection
-APPIUM_HOST=10.0.2.15
+APPIUM_HOST=172.17.200.200
 APPIUM_PORT=5555
 echo "--- Caught $APPIUM_HOST:$APPIUM_PORT as the Appium IP address"
 
@@ -44,9 +44,9 @@ BROWSER_NAME="android"
 echo "--- The tests will run on the $BROWSER_NAME browser"
 
 DEVICE_NAME="$(adb devices | head -n2 | tail -n1 | awk '{print $1}')"
-if [[ ! $DEVICE_NAME ]]; then
+if [[ ! $DEVICE_NAME ]] || [[ $DEVICE_NAME != emulator* ]] ; then
     echo -e "\n--------- ERROR ---------"
-    echo "Your device isn't running"
+    echo "Your device (starting with 'emulator-') isn't running"
     echo "Script stopped"
     exit 1
 fi
@@ -60,8 +60,10 @@ echo "--- $MAX_INSTANCES instance(s) of the node will be used"
 
 echo "Connecting..."
 
+# To be able to run the image with the rights to edit network interfaces: --cap-add=NET_ADMIN
 docker run -it \
     --rm \
+    --cap-add=NET_ADMIN \
     -e CONNECT_TO_GRID=$CONNECT_TO_GRID \
     -e PLATFORM_NAME=$PLATFORM_NAME \
     -e APPIUM_HOST=$APPIUM_HOST \
