@@ -16,7 +16,7 @@ $SCRIPTS_FOLDER_PATH = Split-Path $MyInvocation.MyCommand.Path -Parent
 
 # Java
 $JRE_PATH = "$SCRIPTS_FOLDER_PATH\bin\jre-8u131-windows-i586.exe"
-$JAVA_BIN_PATH = "C:\Program Files\Java\jre1.8.0_131\bin"
+$JAVA_BIN_PATH = "C:\Program Files (x86)\Java\jre1.8.0_131\bin"
 $JAVA_EXE_PATH = "$JAVA_BIN_PATH\java.exe"
 
 
@@ -38,7 +38,6 @@ Else
         Write-Host "Run $JRE_PATH."
         Start-Sleep -s 2
         Invoke-Expression $JRE_PATH
-	    Write-Host "Java is now ready to use."
     }
     Else
     {

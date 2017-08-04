@@ -15,7 +15,7 @@
 $SCRIPTS_FOLDER_PATH = Split-Path $MyInvocation.MyCommand.Path -Parent
 
 # Java
-$JAVA_BIN_PATH = "C:\Program Files\Java\jre1.8.0_131\bin"
+$JAVA_BIN_PATH = "C:\Program Files (x86)\Java\jre1.8.0_131\bin"
 $JAVA_EXE_PATH = "$JAVA_BIN_PATH\java.exe"
 
 # Selenium
@@ -35,12 +35,8 @@ If (Test-Path $JAVA_EXE_PATH)
     Write-Host "Let's try to run the Selenium hub now..."
 
     If (Test-Path $SELENIUM_JAR_PATH) 
-    { 
-        # Run browser to check grid console
-        $IE=new-object -com internetexplorer.application
-        $IE.navigate2("$SELENIUM_HUB_URL`:$SELENIUM_HUB_PORT$SELENIUM_GRID_CONSOLE_URL")
-        $IE.visible=$true
-
+    {
+        Write-Host "You can open your browser at http://localhost:4444/grid/console"
         Invoke-Expression "java -jar $SELENIUM_JAR_PATH -port $SELENIUM_HUB_PORT -role hub"
     } 
     Else 

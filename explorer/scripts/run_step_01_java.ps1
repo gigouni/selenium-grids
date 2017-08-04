@@ -38,7 +38,6 @@ Else
         Write-Host "Run $JRE_PATH"
         Start-Sleep -s 2
         Invoke-Expression $JRE_PATH
-	    Write-Host "Java is now ready to use"
     }
     Else
     {
