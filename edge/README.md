@@ -13,7 +13,7 @@
             - [1.3.2.3. Boot loading](#1323-boot-loading)
             - [1.3.2.4. Clipboard](#1324-clipboard)
             - [1.3.2.5. Security](#1325-security)
-        - [1.3.3. Turning on](#133-turning-on)
+        - [1.3.3. Reboot](#133-reboot)
     - [1.4. Selenium hub](#14-selenium-hub)
         - [1.4.1. Java dependencies](#141-java-dependencies)
         - [1.4.2. Run the hub](#142-run-the-hub)
@@ -50,30 +50,36 @@ To plug a Edge node to a Selenium grid, we need to have a Windows environment du
 For the next part, we're considering you're working on a Linux/Mac distribution. If you're using a Windows, you won't have to follow the first steps but _the configuration of the node may interest you_.
 
 ## 1.3. The virtual machine
+
 ### 1.3.1. Creation
 
 When you need to work with Windows environment while being on a Linux (or Mac) one, you need to pass by virtual machines manager like VirtualBox. But, how to run VM without virtual environment? Microsoft provides it for you. These free VM are for development use. They are limited by their potential (dependencies, hardware settings, etc...) and by duration. You can only use each free VM for 90 days. But if you create a snapshot during the first days of the trial, you will be able to reset it regularly to a stable version.
 
-To download it, you can [go to the microsoft website](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) and choose your environment settings. Let's go for 
+To download it, you can [go to the microsoft website](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) and choose your environment settings. Let's go for
 
-* Virtual machine: Microsoft Edge on Win10 (x64) Stable (15.15063)
-* Select platform: VirtualBox
+- Virtual machine: Microsoft Edge on Win10 (x64) Stable (15.15063)
+- Select platform: VirtualBox
 
-to get your ZIP file. Once you've installed it through the VirtualBox UI, you will be able to run it and configure it. 
+to get your ZIP file.
+
+To install the virtual appliance (_we used here the term of appliance because the VM are already pre-configured_), run Virtual Box. In the main menu, go for _Import virtual appliance_. Select your OVA file. Then, it's important to tick the checkbox _Reset MAC address of all the network cards_ to avoid MAC address conflicts. If you want to custom your virtual appliance, you can do it now or you can wait the next step of this documentation, aka [1.3.2. Configuration](#132-configuration).
+
+Once you've installed it through the VirtualBox UI, you will be able to run it and configure it.
 
 ### 1.3.2. Configuration
+
 #### 1.3.2.1. Hardware
 
 Before starting your machine, you can improve a little bit your experience by editing some default hardware settings. I recommend to increase the available __RAM to a minimum of 512Mb__ and to set the __memory cache to a minimum of 9Mb__ to be able to display the VM in a full-screen mode.
 
 #### 1.3.2.2. Locale
 
-If you're locale ain't the good one, go to _Settings_, 
+If you're locale ain't the good one, go to _Settings_
 
-* In _Date & Time_, change your timezone
-* In _Region & language_, change your region and add your locale language (remove the default one)
+- In _Date & Time_, change your timezone
+- In _Region & language_, change your region and add your locale language (remove the default one)
 
-After some seconds (time for locale to be downloaded and installed), your correct locale will be working like a charm.  
+After some seconds (time for locale to be downloaded and installed), your correct locale will be working like a charm.
 
 #### 1.3.2.3. Boot loading
 
@@ -81,15 +87,14 @@ You can prevent useless start services by taping _msconfig_ in the Windows searc
 
 #### 1.3.2.4. Clipboard
 
-Do not hesitate to share the clipboards between the host and the VM. To do it, with Virtual Box by example, you won't even need to shutdown your VM, just go 
-to _Settings_, _General_, then _Advanced_. Set the _Shared clipboard_ value to _bidirectional_
+Do not hesitate to share the clipboards between the host and the VM. To do it, with Virtual Box by example, you won't even need to shutdown your VM, just go to _Settings_, _General_, then _Advanced_. Set the _Shared clipboard_ value to _bidirectional_
 
 #### 1.3.2.5. Security
 
 Now, to run the scripts, you'll have two choices. The first is about copying/pasting the content of the scripts (and the binary files btw) in your VM is everything might be OK. But you can be decided to directly download these scripts. Being external, your VM won't know the source and by security measures, will block them. To bypass this situation, follow the next steps.
 
-* Run Powershell as an Administrator
-* Run this command and respond Yes (for all)
+- Run Powershell as an Administrator
+- Run this command and respond Yes (for all)
 
 ```shell
 $ # Violent, but effective
@@ -98,44 +103,50 @@ $ Set-ExecutionPolicy Bypass
 
 To understand why using _Bypass_ execution policy, follow [this technical note](https://4sysops.com/archives/powershell-bypass-executionpolicy-to-run-downloaded-scripts/).
 
-### 1.3.3. Turning on
+### 1.3.3. Reboot
 
 To be sure having all your previous configuration correctly set, you can reboot your VM and check everything. If you didn't do it yet, __I strongly recommend you to snapshot your current version of the VM__ to be sure having a backup in case of issues.
 
 ## 1.4. Selenium hub
+
+_Note:_
+
+To run the next scripts, you'll need to respect the basic paths or you may have to edit the path into the scripts themselves.
+
 ### 1.4.1. Java dependencies
 
-To run the Selenium hub, we will first need to fill the Java dependencies because we're using a JAR file. JAR files are Java archive, containing a set of functions and to access to them, we need to set our system to follow the good configuration. Don't worry, the scripts will do it for it. For this step, you just need to run the first script, _run_step_01_java.ps1_.
+To run the Selenium hub, we will first need to fill the Java dependencies because we're using a JAR file. JAR files are Java archive, containing a set of functions and to access to them, we need to set our system to follow the good configuration. Don't worry, the scripts will do it for it. __For this step, you just need to run the first script__, _run_step_01_java.ps1_.
 
 These scripts are Powershell ones to have a better bunch of scripting functions. Being sure that these scripts are for Windows environment make them perfectly suitable.
 
 _Steps important in this script:_
 
-* Check if Java is not already installed as a command
-* If not, check if the JRE binary exists
-* If true, install the JRE to have Java as a command
+- Check if Java is not already installed as a command
+- If not, check if the JRE binary exists
+- If true, install the JRE to have Java as a command
 
 ### 1.4.2. Run the hub
 
-We will now use once again ready-to-run scripts. To help and improve your development process, you will find the second sprint, _run_step_02_hub.ps1_.
+We will now use once again ready-to-run scripts. To help and improve your development process, you will __find the second script__, _run_step_02_hub.ps1_.
 
 _Steps important in this script:_
 
-* Check if Java is not already installed as a command
-* If true, check if the JAR file exists
-* If true, open the Edge browser to the hub IP address
-* Run the JAR file to run the Selenium hub
+- Check if Java is not already installed as a command
+- If true, check if the JAR file exists
+- If true, open the Edge browser to the hub IP address
+- Run the JAR file to run the Selenium hub
 
 ## 1.5. Selenium Edge node
 
-Finally, the third and last script, _run_step_03_node_edge.ps1_, is to run the Edge node.
+Finally, the third and last script, _run_step_03_node_edge.ps1_, is to __run the Edge node__.
 
 _Steps important in this script:_
 
-* Check if Java is not already installed as a command
-* If true, run the Edge node
+- Check if Java is not already installed as a command
+- If true, run the Edge node
 
 ## 1.6. Tests
+
 ### 1.6.1. Settings
 
 The main aim of the Selenium grid is to be able to run tests on several platforms (browsers, operating systems). In that case, just as an example, I choose to test a website we all know, Google. The test is simple: on the Google homepage, waits until the page is fully loaded, searches the keyword 'google', then press "Search" button, clicks on the first link to return on the Google homepage.
