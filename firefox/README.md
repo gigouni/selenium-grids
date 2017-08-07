@@ -66,6 +66,28 @@ __For FF < 48__
 
 _Geckodriver_, the Mozilla Firefox driver, is suitable [since the 48.0](https://github.com/mozilla/geckodriver/issues/85). Before this version, you need to pass by [Marionette](https://developer.mozilla.org/fr/docs/Mozilla/QA/Marionette). If you're using Selenium > 3.0, Marionette is already include within the JAR file. To build images for FF < 48, please refer to [this folder instead](./before_v48/Dockerfile).
 
+_Geckodriver_, the Mozilla Firefox driver, is suitable [since the 48.0](https://github.com/mozilla/geckodriver/issues/85). Before this version, you need to disable Marionette by adding
+
+```javascript
+let firefoxCap = Capabilities.firefox();
+// use legacy drivers (by setting marionette: false)
+// https://github.com/angular/protractor/issues/4170
+firefoxCap.set('marionette', false);
+```
+
+but you'll get another error
+
+```shell
+Error: You may not use a custom command executor with the legacy FirefoxDriver
+```
+
+It's a [known issue](https://stackoverflow.com/questions/42220507/protractor-cant-run-in-firefox-works-fine-in-chrome/42430278#42430278) and there are two solutions. 
+
+- First: running tests on higher versions of Firefox --> we want to test on FF41, not interesting
+- Second: downgrade the current version of Selenium from 3.4.0 to 2.5x.y --> we would have two Selenium grids, not interesting
+
+The problem remains unresolved. From now on, we're considering impossible to build tests on Firefox < 48 images.
+
 ### 1.2.2. Run
 
 Run your Selenium hub (_if it's not already running_)

@@ -22,17 +22,8 @@
 //                       Hub and nodes                           //
 // ------------------------------------------------------------- //
 const _SELENIUM_HOST = 'http://172.17.0.2';
-const _FIREFOX_HOST = 'http://172.17.0.4';
-const _CHROME_HOST = 'http://172.17.0.3';
-const _ANDROID_HOST = 'http://172.17.200.200';
-const _ANDROID_PORT = 5555;
-const _PORT_BASE = 5555;
 const _SELENIUM_PORT = 4444;
 const _PATH_TO_HUB = '/wd/hub';
-
-const _FIREFOX_NODE = `${_FIREFOX_HOST}:${_PORT_BASE}${_PATH_TO_HUB}`;
-const _CHROME_NODE = `${_CHROME_HOST}:${_PORT_BASE}${_PATH_TO_HUB}`;
-const _ANDROID_NODE = `${_ANDROID_HOST}:${_ANDROID_PORT}${_PATH_TO_HUB}`;
 
 const _SELENIUM_HUB = `${_SELENIUM_HOST}:${_SELENIUM_PORT}${_PATH_TO_HUB}`;
 
@@ -50,9 +41,6 @@ const _GOOGLE_RES_LINK = 'h3.r a';
 
 module.exports = {
 
-    FIREFOX_NODE: _FIREFOX_NODE,
-    CHROME_NODE: _CHROME_NODE,
-    ANDROID_NODE: _ANDROID_NODE,
     SELENIUM_HUB: _SELENIUM_HUB,
 
     GOOGLE_URL: _GOOGLE_URL,
