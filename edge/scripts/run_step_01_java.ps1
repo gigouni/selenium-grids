@@ -29,7 +29,7 @@ If (Test-Path $JAVA_EXE_PATH)
 } 
 Else 
 { 
-    Write-Host "Java ins't install yet." -foregroundcolor red
+    Write-Host "Java isn't install yet." -foregroundcolor red
     Write-Host "Running Java install executable..."
 
     If(Test-Path $JRE_PATH)
