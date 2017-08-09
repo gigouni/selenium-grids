@@ -40,17 +40,17 @@ $ docker run -it -d --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0
 $ xdg-open http://172.17.0.2:4444/grid/console &
 $
 $ # Device emulator
-$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host &
+$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
 $
 $ # Appium server
 $ ./build.sh
 $
 $ # Download Android system images and create AVD
-$ echo y | android update sdk --filter android-24 --no-ui -a
-$ echo y | android update sdk --filter sys-img-x86_64-android-24 --no-ui -a
-$ echo no | avdmanager create avd \
+$ echo no | sdkmanager "system-images;android-24;google_apis;x86"
+$ avdmanager create avd \
     -n gigouni_android_devices_API24 \
-    -k "system-images;android-24;google_apis_playstore;x86"
+    -k "system-images;android-24;google_apis;x86" \
+    -f
 $
 $ # Run Appium server
 $ ./run.sh
@@ -65,7 +65,7 @@ You may already have the Dockerfile and the mandatory files if you're able to re
 
 ### 1.2.1. Conveniences
 
-For convenience problems, think about the use of aliases or environment variables in your next commands. Here we'll add 
+For convenience problems, think about the use of aliases or environment variables in your next commands. Here we'll add
 
 ```shell
 $ # For sdkmanager and avdmanager usage
@@ -119,7 +119,6 @@ $ echo no | sdkmanager "system-images;${TARGET};${IMG_TYPE};${ABI}"
 $ echo no | avdmanager create avd \
     -n "gigouni_android_devices_API${TARGET}" \
     -k "system-images;${TARGET};${IMG_TYPE};${ABI}" \
-    -c 100M \
     -f
 ```
 
@@ -207,7 +206,7 @@ emulator-5554	device
 
 __Possible issues:__
 
-* Qt library not found
+- Qt library not found
 
 ```shell
 [139659433264960]:ERROR:./android/qt/qt_setup.cpp:28:Qt library not found at ../emulator/lib64/qt/lib
@@ -218,11 +217,11 @@ It's a [known error](https://issuetracker.google.com/issues/37137213), even if i
 
 As a workaround, use [this solution](https://stackoverflow.com/questions/42554337/cannot-launch-avd-in-emulatorqt-library-not-found#answer-42955322).
 
-* Cannot run the emulator for these settings
+- Cannot run the emulator for these settings
 
 Not the exact message but you've got it. If you're getting it, you've got a problem during the configuration of your device. The ABI and/or the target might not be matching a suitable combination. Edit it following the documentation links and repeat the previous operations.
 
-* Emulator showing black screen and 'adb devices' shows device as offline
+- Emulator showing black screen and 'adb devices' shows device as offline
 
 It seems to be due to the incompatibilities between the Host GPU and the emulated one. It's a [known issue](https://stackoverflow.com/questions/10022580/android-emulator-shows-nothing-except-black-screen-and-adb-devices-shows-device) and it can be handled by checking the [Android documentation here](https://developer.android.com/studio/run/emulator-acceleration.html). To sum up, you need to run your device with another parameter.
 
@@ -238,7 +237,7 @@ Finally, that's now that your AVD is important. If we're considering using an em
 $ ll /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
 ```
 
-If _ll_ is not recognized as a command, your 'll' alias might not be set. Just use 
+If _ll_ is not recognized as a command, your 'll' alias might not be set. Just use
 
 ```shell
 $ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
@@ -246,7 +245,7 @@ $ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
 
 You can check the way it's handled in the _./generate_config.sh_ file.
 
-#### 1.2.3.2. Device within Docker 
+#### 1.2.3.2. Device within Docker
 
 The interest of Docker was to be able to whenever dispose of a ready Android device. It's an easy tool and improve the deployment process.
 

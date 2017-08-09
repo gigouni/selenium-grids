@@ -114,11 +114,12 @@ EXPOSE 4723
 COPY \
   entry_point.sh \
   generate_config.sh \
-  bridge_connection.sh \
+  # bridge_connection.sh \
     /root/
 RUN chmod +x /root/entry_point.sh && \
-    chmod +x /root/generate_config.sh && \
-    chmod +x /root/bridge_connection.sh
+    chmod +x /root/generate_config.sh 
+    # && \
+    # chmod +x /root/bridge_connection.sh
 
 #========================================
 # Run xvfb and appium server

@@ -2,8 +2,6 @@
 #### Description: Script to automatize the default run process
 #### Author: Nicolas GIGOU <nicolas.gigou@telecomsante.com>
 
-./build.sh
-
 info () { echo -e "[INFO]    $1"; }
 debug () { echo -e "[DEBUG]   $1"; }
 error () { echo -e "[ERROR]   $1"; }
@@ -11,6 +9,8 @@ stop () {
     info "Script stopped"
     exit 1
 }
+
+./build.sh
 
 echo -e "\n\n"
 
@@ -30,8 +30,9 @@ info "--- Adding a node for an $PLATFORM_NAME device"
 # Appium address
 # ============================================================
 # The APPIUM here refers to the Android device connection
-APPIUM_HOST=172.17.200.200
-APPIUM_PORT=5555
+# APPIUM_HOST=172.17.200.200
+APPIUM_HOST=10.0.2.2
+APPIUM_PORT=4723
 info "--- Caught $APPIUM_HOST:$APPIUM_PORT as the Appium IP address"
 
 # ============================================================
