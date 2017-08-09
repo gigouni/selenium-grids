@@ -3,7 +3,6 @@
 CMD="xvfb-run appium"
 
 if [ ! -z "$CONNECT_TO_GRID" ]; then
-  # /root/bridge_connection.sh
   /root/generate_config.sh
 
 

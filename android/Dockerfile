@@ -117,9 +117,7 @@ COPY \
   # bridge_connection.sh \
     /root/
 RUN chmod +x /root/entry_point.sh && \
-    chmod +x /root/generate_config.sh 
-    # && \
-    # chmod +x /root/bridge_connection.sh
+    chmod +x /root/generate_config.sh
 
 #========================================
 # Run xvfb and appium server
