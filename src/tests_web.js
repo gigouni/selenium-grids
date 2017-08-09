@@ -22,13 +22,7 @@ test.describe('Work with REMOTE URL', () => {
             .build();
         driver.get(CONSTANTS.GOOGLE_URL);
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
-        driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
-        let btn_search = driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_NAME));
-        btn_search.click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_SEARCH_TITLE));
-        driver.wait(until.elementLocated(By.tagName(CONSTANTS.GOOGLE_RES_LINK))).click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
-        driver.quit();
+        driver.close();
     });
 
     test.it('should redirect to Google with FIREFOX', () => {
@@ -37,14 +31,8 @@ test.describe('Work with REMOTE URL', () => {
             .usingServer(CONSTANTS.SELENIUM_HUB)
             .withCapabilities(webdriver.Capabilities.firefox())
             .build();
-
         driver.get(CONSTANTS.GOOGLE_URL);
         driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
-        driver.wait(until.elementLocated(By.name(CONSTANTS.GOOGLE_SEARCH_KEY))).sendKeys(CONSTANTS.GOOGLE_SEARCH_VALUE);
-        driver.findElement(By.name(CONSTANTS.GOOGLE_SEARCH_BUTTON_NAME)).click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_SEARCH_TITLE));
-        driver.wait(until.elementLocated(By.tagName(CONSTANTS.GOOGLE_RES_LINK))).click();
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
-        driver.quit();
+        driver.close();
     });
 });
