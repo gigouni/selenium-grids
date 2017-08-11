@@ -8,5 +8,6 @@
 # ===============================================================
 docker build \
     --build-arg APPIUM_VERSION=1.6.5 \
+    --build-arg CHROME_DRIVER_VERSION=2.23 \
     -t gigouni/appium-1.6.5 \
     .

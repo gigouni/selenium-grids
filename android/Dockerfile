@@ -81,13 +81,16 @@ ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
 ARG APPIUM_VERSION=1.6.5
 ENV APPIUM_VERSION=${APPIUM_VERSION}
 
+ARG CHROME_DRIVER_VERSION=2.9
+ENV CHROME_DRIVER_VERSION=${CHROME_DRIVER_VERSION}
+
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
     apt-get -qqy install nodejs && \
     echo Y | apt install build-essential && \
     npm install -g gulp appium-gulp-plugins && \
     npm install -g appium-doctor && \
     appium-doctor && \
-    npm install -g appium@${APPIUM_VERSION} --no-shrinkwrap --unsafe-perm && \
+    npm install -g appium@${APPIUM_VERSION} --chromedriver_version="$CHROME_DRIVER_VERSION" --no-shrinkwrap --unsafe-perm && \
     npm cache clean --force && \
     apt-get remove --purge -y npm && \
     apt-get autoremove --purge -y && \
