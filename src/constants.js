@@ -21,7 +21,7 @@
 // ------------------------------------------------------------- //
 //                       Hub and nodes                           //
 // ------------------------------------------------------------- //
-const _SELENIUM_HOST = 'http://172.17.0.2';
+const _SELENIUM_HOST = 'http://127.0.0.1';
 const _SELENIUM_PORT = 4444;
 const _PATH_TO_HUB = '/wd/hub';
 

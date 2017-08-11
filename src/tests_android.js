@@ -19,16 +19,16 @@ test.describe('Work with REMOTE URL', () => {
         let android_capabilities = new Capabilities()
             .set('browserName', 'Chrome')
             .set('platform', 'ANDROID')
-            .set('deviceName', 'emulator-5554')
-            .set('platformName', 'ANDROID');
+            .set('platformName', 'Android')
+            .set('deviceName', 'emulator-5554');
 
         let driver = new webdriver.Builder()
             .usingServer(CONSTANTS.SELENIUM_HUB)
             .withCapabilities(android_capabilities)
             .build();
 
-        driver.get("https://github.com");
-        driver.quit();
+        driver.get(CONSTANTS.GOOGLE_URL);
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         done();
     });
 });
