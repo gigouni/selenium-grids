@@ -10,9 +10,9 @@ if [ -z "$PLATFORM_NAME" ];   then PLATFORM_NAME="Android"; fi
 if [ -z "$OS_VERSION" ];      then echo "Empty OS_VERSION for the device Android"; fi
 if [ -z "$APPIUM_HOST" ];     then APPIUM_HOST="10.0.2.15"; fi
 if [ -z "$APPIUM_PORT" ];     then APPIUM_PORT=4723; fi
-if [ -z "$SELENIUM_HOST" ];   then SELENIUM_HOST="172.17.0.2"; fi
+if [ -z "$SELENIUM_HOST" ];   then SELENIUM_HOST="localhost"; fi
 if [ -z "$SELENIUM_PORT" ];   then SELENIUM_PORT=4444; fi
-if [ -z "$BROWSER_NAME" ];    then BROWSER_NAME="android"; fi
+if [ -z "$BROWSER_NAME" ];    then BROWSER_NAME="browser"; fi
 if [ -z "$MAX_INSTANCES" ];   then MAX_INSTANCES=1; fi
 
 # Here why the default value of the Appium host
@@ -34,7 +34,7 @@ fi
 nodeconfig=$(cat <<_EOF
 {
   "capabilities": [{
-    "platform": "$PLATFORM_NAME",
+    "platform": "$PLATFORM",
     "platformName": "$PLATFORM_NAME",
     "version": "$OS_VERSION",
     "browserName": "$BROWSER_NAME",

@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Description: Script to automatize the default run process
-#### Author: Nicolas GIGOU <nicolas.gigou@telecomsante.com>
+#### Author: Nicolas GIGOU <nicolas.gigou [at] gmail.com>
 
 ./build.sh
 

@@ -1,8 +1,8 @@
 FROM ubuntu:16.04
 
 LABEL author "Srinivasan Sekar <srinivasan.sekar1990@gmail.com>"
-LABEL editor "Nicolas Gigou <nicolas.gigou@telecomsante.com>"
-LABEL maintainer "Nicolas Gigou <nicolas.gigou@telecomsante.com>"
+LABEL editor "Nicolas Gigou <nicolas.gigou [at] gmail.com>"
+LABEL maintainer "Nicolas Gigou <nicolas.gigou [at] gmail.com>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -91,7 +91,6 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
     npm cache clean --force && \
     apt-get remove --purge -y npm && \
     apt-get autoremove --purge -y && \
-    # rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get clean
 
 #==================================
@@ -114,7 +113,6 @@ EXPOSE 4723
 COPY \
   entry_point.sh \
   generate_config.sh \
-  # bridge_connection.sh \
     /root/
 RUN chmod +x /root/entry_point.sh && \
     chmod +x /root/generate_config.sh

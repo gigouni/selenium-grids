@@ -13,10 +13,9 @@ const Capabilities = require('selenium-webdriver/lib/capabilities').Capabilities
 // ------------------------------------------------------------- //
 test.describe('Work with REMOTE URL', () => {
 
-    let driver;
-
     test.it('should redirect to Google with CHROME', () => {
-        driver = new webdriver.Builder()
+        
+        let driver = new webdriver.Builder()
             .usingServer(CONSTANTS.SELENIUM_HUB)
             .withCapabilities(webdriver.Capabilities.chrome())
             .build();
@@ -27,7 +26,7 @@ test.describe('Work with REMOTE URL', () => {
 
     test.it('should redirect to Google with FIREFOX', () => {
 
-        driver = new webdriver.Builder()
+        let driver = new webdriver.Builder()
             .usingServer(CONSTANTS.SELENIUM_HUB)
             .withCapabilities(webdriver.Capabilities.firefox())
             .build();
