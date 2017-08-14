@@ -69,8 +69,6 @@ RUN wget -O tools.zip https://dl.google.com/android/repository/tools_r${SDK_VERS
 
 ENV PATH=${PATH}:${ANDROID_HOME}/tools
 
-RUN echo ${PATH}
-
 RUN echo y | android update sdk -a -u -t platform-tools,build-tools-${ANDROID_BUILD_TOOLS_VERSION}
 
 ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
