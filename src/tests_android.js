@@ -12,15 +12,17 @@ let test = require('selenium-webdriver/testing');
 // ------------------------------------------------------------- //
 //                      Remote testing                           //
 // ------------------------------------------------------------- //
-test.describe('Work with REMOTE URL', () => {
+describe('Work with REMOTE URL', () => {
 
-    test.it('should redirect to Google', (done) => {
+    // Capabilities
+    let android_capabilities = new Capabilities()
+        .set('browserName', 'Chrome')
+        .set('platform', 'ANDROID')
+        .set('platformName', 'Android')
+        .set('deviceName', 'emulator-5554');
 
-        let android_capabilities = new Capabilities()
-            .set('browserName', 'Chrome')
-            .set('platform', 'ANDROID')
-            .set('platformName', 'Android')
-            .set('deviceName', 'emulator-5554');
+    // Test
+    test.it('should redirect to Github', (done) => {
 
         let driver = new webdriver.Builder()
             .usingServer(CONSTANTS.SELENIUM_HUB)
@@ -28,7 +30,6 @@ test.describe('Work with REMOTE URL', () => {
             .build();
 
         driver.get(CONSTANTS.GOOGLE_URL);
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
         done();
     });
 });
