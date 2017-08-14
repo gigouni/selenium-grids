@@ -39,18 +39,18 @@ $ # Hub
 $ docker run -it -d --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0-dysprosium
 $ xdg-open http://172.17.0.2:4444/grid/console &
 $
-$ # Device emulator
-$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
-$
-$ # Appium server
-$ ./build.sh
-$
 $ # Download Android system images and create AVD
 $ echo no | sdkmanager "system-images;android-24;google_apis;x86"
 $ avdmanager create avd \
     -n gigouni_android_devices_API24 \
     -k "system-images;android-24;google_apis;x86" \
     -f
+$
+$ # Device emulator
+$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
+$
+$ # Appium server
+$ ./build.sh
 $
 $ # Run Appium server
 $ ./run.sh
@@ -90,6 +90,7 @@ $ docker build \
     --build-arg SDK_VERSION=25.2.3 \
     --build-arg ANDROID_BUILD_TOOLS_VERSION=25.0.3 \
     --build-arg APPIUM_VERSION=1.6.5 \
+    --build-arg CHROME_DRIVER_VERSION=2.9 \
     -t gigouni/appium-1.6.5 \
     .
 ```
@@ -320,3 +321,9 @@ $ mocha --timeout 30000 tests_android.js
 _Note:_
 
 The timeout value here is necessary to avoid that your tests ask for the end before the real end of the tests. It this command crashes, increase the value. Depending on your test, you can try to decrease it but be careful. Even if you're running twice the same test in the exact same conditions, you're not sure having the same execution time.
+
+__Possible issues:__
+
+- An unknown server-side error occurred while processing the command. Original error: unknown error: Chrome version must be >= xx.y.z
+
+This error is something know and due to ChromeDriver compatibility. When running your device, check its Chrome version (_Run Chrome/Settings/About Chrome/Application version_). Either your get an updated version of Chrome either you choose another version of ChromeDriver when building your Docker image. Just follow [this link](https://github.com/appium/appium/blob/master/docs/en/advanced-concepts/chromedriver.md) to know which version corresponding to yours.
