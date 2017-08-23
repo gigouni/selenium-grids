@@ -6,6 +6,7 @@ let webdriver = require('selenium-webdriver');
 let By = require('selenium-webdriver').By;
 let until = require('selenium-webdriver').until;
 let Capabilities = require('selenium-webdriver').Capabilities;
+let Keys = require('selenium-webdriver').Key;
 let test = require('selenium-webdriver/testing');
 
 
@@ -17,7 +18,6 @@ describe('Work with REMOTE URL', () => {
     // Capabilities
     let android_capabilities = new Capabilities()
         .set('browserName', 'Chrome')
-        .set('platform', 'ANDROID')
         .set('platformName', 'Android')
         .set('deviceName', 'emulator-5554');
 
@@ -30,6 +30,9 @@ describe('Work with REMOTE URL', () => {
             .build();
 
         driver.get(CONSTANTS.GOOGLE_URL);
+        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+
+        driver.quit();
         done();
     });
 });
