@@ -19,7 +19,6 @@ MAX_INSTANCES=1
 # To be able to run the image with the rights to edit network interfaces: --cap-add=NET_ADMIN
 docker run -it \
     --rm \
-    --cap-add=NET_ADMIN \
     -e CONNECT_TO_GRID=$CONNECT_TO_GRID \
     -e PLATFORM=$PLATFORM \
     -e PLATFORM_NAME=$PLATFORM_NAME \
