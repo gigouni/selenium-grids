@@ -1,13 +1,12 @@
 FROM selenium/node-base:3.4.0-dysprosium
 LABEL initial_authors=SELENIUMHQ
-LABEL last_author=gigouni
+LABEL last_author="Nicolas GIGOU <nicolas.gigou [at] gmail.com>"
 
 USER root
 
 #=========
 # Firefox
 #=========
-# Default Firefox version will be here the '53.0' one
 ARG FIREFOX_VERSION=53.0
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install firefox \
@@ -23,7 +22,6 @@ RUN apt-get update -qqy \
 #============
 # GeckoDriver
 #============
-# Default Gecko driver version will be here the '0.16.1' one
 ARG GECKODRIVER_VERSION=0.18.0
 RUN wget --no-verbose -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
   && rm -rf /opt/geckodriver \
@@ -39,5 +37,4 @@ COPY generate_config /opt/bin/generate_config
 
 # Running this command as sudo just to avoid the message:
 # To run a command as administrator (user "root"), use "sudo <command>". See "man sudo_root" for details.
-# When logging into the container
 RUN sudo echo ""
