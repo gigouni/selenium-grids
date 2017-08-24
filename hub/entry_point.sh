@@ -22,7 +22,7 @@ function shutdown {
 java ${JAVA_OPTS} \
   -jar /opt/selenium/selenium-server-standalone.jar \
   -role hub \
-  -newSessionWaitTimeout 40000 \
+  -newSessionWaitTimeout $GRID_NEW_SESSION_WAIT_TIMEOUT \
   -hubConfig $CONF \
   ${SE_OPTS} &
 NODE_PID=$!
