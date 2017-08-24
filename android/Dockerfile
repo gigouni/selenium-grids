@@ -2,7 +2,6 @@ FROM ubuntu:16.04
 
 LABEL author "Srinivasan Sekar <srinivasan.sekar1990@gmail.com>"
 LABEL editor "Nicolas Gigou <nicolas.gigou [at] gmail.com>"
-LABEL maintainer "Nicolas Gigou <nicolas.gigou [at] gmail.com>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -50,17 +49,17 @@ RUN apt-get -qqy update && \
 #===============
 # Set JAVA_HOME
 #===============
-ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
-ENV PATH="$PATH:$JAVA_HOME/bin"
+ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre" \ 
+    PATH="$PATH:$JAVA_HOME/bin"
 
 #=====================
 # Install Android SDK
 #=====================
 ARG SDK_VERSION=25.2.3
 ARG ANDROID_BUILD_TOOLS_VERSION=25.0.3
-ENV SDK_VERSION=${SDK_VERSION}
-ENV ANDROID_BUILD_TOOLS_VERSION=${ANDROID_BUILD_TOOLS_VERSION}
-ENV ANDROID_HOME="/root"
+ENV SDK_VERSION=${SDK_VERSION} \
+    ANDROID_BUILD_TOOLS_VERSION=${ANDROID_BUILD_TOOLS_VERSION} \
+    ANDROID_HOME="/root"
 
 RUN wget -O tools.zip https://dl.google.com/android/repository/tools_r${SDK_VERSION}-linux.zip && \
     unzip tools.zip && rm tools.zip && \
@@ -77,10 +76,10 @@ ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
 # Install latest nodejs, npm, appium
 #====================================
 ARG APPIUM_VERSION=1.6.5
-ENV APPIUM_VERSION=${APPIUM_VERSION}
-
 ARG CHROME_DRIVER_VERSION=2.9
-ENV CHROME_DRIVER_VERSION=${CHROME_DRIVER_VERSION}
+
+ENV APPIUM_VERSION=${APPIUM_VERSION} \
+    CHROME_DRIVER_VERSION=${CHROME_DRIVER_VERSION}
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
     apt-get -qqy install nodejs && \
