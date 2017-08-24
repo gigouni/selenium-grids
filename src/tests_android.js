@@ -22,7 +22,7 @@ describe('Work with REMOTE URL', () => {
         .set('deviceName', 'emulator-5554');
 
     // Test
-    test.it('should redirect to Github', (done) => {
+    test.it('should redirect to Google', (done) => {
 
         let driver = new webdriver.Builder()
             .usingServer(CONSTANTS.SELENIUM_HUB)
