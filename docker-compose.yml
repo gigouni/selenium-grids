@@ -31,9 +31,29 @@ services:
       - HUB_PORT_4444_TCP_ADDR=172.17.0.1
       - HUB_PORT_4444_TCP_PORT=4444
       - NODE_MAX_INSTANCES=1
-      - NODE_APPLICATION_NAME=node_firefox
+      - NODE_APPLICATION_NAME=node-firefox
       - NODE_MAX_SESSION=1
       - NODE_PORT=5558
+      - NODE_REGISTER_CYCLE=5000
+      - NODE_POLLING=5000
+      - NODE_UNREGISTER_IF_STILL_DOWN_AFTER=60000
+      - NODE_DOWN_POLLING_LIMIT=2
+
+  chrome:
+    depends_on:
+      - hub
+    container_name: "selenium-node-chrome"
+    build:
+      context: ./chrome
+    environment:
+      - CHROME_VERSION=google-chrome-stable
+      - CHROME_DRIVER_VERSION=2.30
+      - HUB_PORT_4444_TCP_ADDR=172.17.0.1
+      - HUB_PORT_4444_TCP_PORT=4444
+      - NODE_MAX_INSTANCES=1
+      - NODE_APPLICATION_NAME=node-chrome
+      - NODE_MAX_SESSION=1
+      - NODE_PORT=5557
       - NODE_REGISTER_CYCLE=5000
       - NODE_POLLING=5000
       - NODE_UNREGISTER_IF_STILL_DOWN_AFTER=60000
