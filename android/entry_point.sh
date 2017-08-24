@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CMD="xvfb-run appium"
+CMD="appium"
 
 if [ ! -z "$CONNECT_TO_GRID" ]; then
   /root/generate_config.sh

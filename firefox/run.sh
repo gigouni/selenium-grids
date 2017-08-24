@@ -7,7 +7,9 @@
 docker run \
     -it \
     --rm \
-    --link selenium-hub:hub \
+    -e HUB_PORT_4444_TCP_ADDR=172.17.0.1 \
+    -e HUB_PORT_4444_TCP_PORT=4444 \
+    -e NODE_PORT=5558 \
     gigouni/firefox53
     
 echo "Closing Firefox node"

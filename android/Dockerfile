@@ -119,6 +119,6 @@ RUN chmod +x /root/entry_point.sh && \
     chmod +x /root/generate_config.sh
 
 #========================================
-# Run xvfb and appium server
+# Run appium server
 #========================================
 CMD ["/root/entry_point.sh"]
