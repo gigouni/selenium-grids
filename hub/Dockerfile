@@ -1,9 +1,6 @@
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
-# PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 FROM selenium/node-base:3.4.0-dysprosium
-LABEL authors=SeleniumHQ
+LABEL first_authors=SeleniumHQ
+LABEL last_author="Nicolas GIGOU <nicolas.gigou [at] gmail.com>"
 
 USER seluser
 
@@ -11,31 +8,32 @@ USER seluser
 # Selenium Configuration
 #========================
 
-EXPOSE 4444
+ARG GRID_MAX_SESSION="5"
+ARG GRID_NEW_SESSION_WAIT_TIMEOUT="-1"
+ARG GRID_THROW_ON_CAPABILITY_NOT_PRESENT="true"
+ARG GRID_JETTY_MAX_THREADS="-1"
+ARG GRID_CLEAN_UP_CYCLE="5000"
+ARG GRID_BROWSER_TIMEOUT="0"
+ARG GRID_TIMEOUT="30"
+ARG GRID_DEBUG="false"
+ARG HUB_HOST="172.17.0.1"
 
-# As integer, maps to "maxSession"
-ENV GRID_MAX_SESSION 5
-# In milliseconds, maps to "newSessionWaitTimeout"
-ENV GRID_NEW_SESSION_WAIT_TIMEOUT -1
-# As a boolean, maps to "throwOnCapabilityNotPresent"
-ENV GRID_THROW_ON_CAPABILITY_NOT_PRESENT true
-# As an integer
-ENV GRID_JETTY_MAX_THREADS -1
-# In milliseconds, maps to "cleanUpCycle"
-ENV GRID_CLEAN_UP_CYCLE 5000
-# In seconds, maps to "browserTimeout"
-ENV GRID_BROWSER_TIMEOUT 0
-# In seconds, maps to "timeout"
-ENV GRID_TIMEOUT 30
-# Debug
-ENV GRID_DEBUG false
+ENV GRID_MAX_SESSION=${GRID_MAX_SESSION} \
+    GRID_NEW_SESSION_WAIT_TIMEOUT=${GRID_NEW_SESSION_WAIT_TIMEOUT} \
+    GRID_THROW_ON_CAPABILITY_NOT_PRESENT=${GRID_THROW_ON_CAPABILITY_NOT_PRESENT} \
+    GRID_JETTY_MAX_THREADS=${GRID_JETTY_MAX_THREADS} \
+    GRID_CLEAN_UP_CYCLE=${GRID_CLEAN_UP_CYCLE} \
+    GRID_BROWSER_TIMEOUT=${GRID_BROWSER_TIMEOUT} \
+    GRID_TIMEOUT=${GRID_TIMEOUT} \
+    GRID_DEBUG=${GRID_DEBUG} \
+    HUB_HOST=${HUB_HOST}
 
 COPY generate_config \
     entry_point.sh \
     /opt/bin/
+
 # Running this command as sudo just to avoid the message:
 # To run a command as administrator (user "root"), use "sudo <command>". See "man sudo_root" for details.
-# When logging into the container
 RUN sudo /opt/bin/generate_config > /opt/selenium/config.json
 
 CMD ["/opt/bin/entry_point.sh"]
