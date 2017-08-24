@@ -2,7 +2,6 @@ version: '3'
 services:
 
   hub:
-    image: "gigouni/hub-3.4.0-dysprosium"
     container_name: "selenium-hub"
     build:
       context: ./hub
@@ -10,12 +9,32 @@ services:
       - 4444:4444
     network_mode: "host"
     environment:
-        - GRID_MAX_SESSION=5
-        - GRID_NEW_SESSION_WAIT_TIMEOUT=40000
-        - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
-        - GRID_JETTY_MAX_THREADS=-1
-        - GRID_CLEAN_UP_CYCLE=5000
-        - GRID_BROWSER_TIMEOUT=0
-        - GRID_TIMEOUT=30
-        - GRID_DEBUG=false
-        - HUB_HOST=172.17.0.1
+      - GRID_MAX_SESSION=5
+      - GRID_NEW_SESSION_WAIT_TIMEOUT=40000
+      - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
+      - GRID_JETTY_MAX_THREADS=-1
+      - GRID_CLEAN_UP_CYCLE=5000
+      - GRID_BROWSER_TIMEOUT=0
+      - GRID_TIMEOUT=30
+      - GRID_DEBUG=false
+      - HUB_HOST=172.17.0.1
+
+  firefox:
+    depends_on:
+      - hub
+    container_name: "selenium-node-firefox"
+    build:
+      context: ./firefox
+    environment:
+      - FIREFOX_VERSION=53.0
+      - GECKODRIVER_VERSION=0.18.0
+      - HUB_PORT_4444_TCP_ADDR=172.17.0.1
+      - HUB_PORT_4444_TCP_PORT=4444
+      - NODE_MAX_INSTANCES=1
+      - NODE_APPLICATION_NAME=node_firefox
+      - NODE_MAX_SESSION=1
+      - NODE_PORT=5558
+      - NODE_REGISTER_CYCLE=5000
+      - NODE_POLLING=5000
+      - NODE_UNREGISTER_IF_STILL_DOWN_AFTER=60000
+      - NODE_DOWN_POLLING_LIMIT=2
