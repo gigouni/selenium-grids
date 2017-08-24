@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  hub:
+    image: "gigouni/hub-3.4.0-dysprosium"
+    container_name: "selenium-hub"
+    build:
+      context: ./hub
+    ports:
+      - 4444:4444
+    network_mode: "host"
+    environment:
+        - GRID_MAX_SESSION=5
+        - GRID_NEW_SESSION_WAIT_TIMEOUT=40000
+        - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
+        - GRID_JETTY_MAX_THREADS=-1
+        - GRID_CLEAN_UP_CYCLE=5000
+        - GRID_BROWSER_TIMEOUT=0
+        - GRID_TIMEOUT=30
+        - GRID_DEBUG=false
+        - HUB_HOST=172.17.0.1
