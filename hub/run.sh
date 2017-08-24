@@ -7,7 +7,7 @@
 docker run \
     -it \
     --rm \
-    -p 4444:444 \
+    -p 4444:4444 \
     --net=host \
     --name selenium-hub \
     gigouni/hub-3.4.0-dyprosium
