@@ -6,7 +6,7 @@ if [[ $1 ]]; then
     TIMEOUT=$1
 else
     # Default value
-    TIMEOUT=30000
+    TIMEOUT=40000
 fi
 
 echo "Starting the tests..."
