@@ -20,13 +20,26 @@ A Dockerfile to dockerize any version in {stable, unstable, beta} of Google Chro
 
 To run everything in a single terminal, use _detached mode_, with the _-d_ argument.
 ```shell
-$ docker build -t gigouni/chrome .
-$ docker run -it -d --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
-$ docker run -it -d --rm --link selenium-hub:hub gigouni/chrome
+$ docker build -t gigouni/chrome_stable .
+$ docker run \
+    -it \
+    --rm \
+    -p 4444:4444 \
+    --net=host \
+    --name selenium-hub \
+    gigouni/hub-3.4.0-dysprosium
+$ docker run \
+    -it \
+    -e HUB_PORT_4444_TCP_ADDR=172.17.0.1 \
+    -e HUB_PORT_4444_TCP_PORT=4444 \
+    -e NODE_PORT=5557 \
+    gigouni/chrome_stable
 ```
 
 ## 1.2. Getting started
+
 ### 1.2.1. Build
+
 #### 1.2.1.1. Basic build
 
 Build a Docker image following your necessary version(s)
@@ -41,7 +54,7 @@ $ docker build -t gigouni/chrome .
 $ docker build \
     --build-arg CHROME_VERSION=stable \
     --build-arg CHROME_DRIVER_VERSION=2.30 \
-    -t gigouni/chrome .
+    -t gigouni/chrome_stable .
 ```
 
 ### 1.2.2. Run
@@ -49,7 +62,13 @@ $ docker build \
 Run your Selenium hub (_if it's not already running_)
 
 ```shell
-$ docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dysprosium
+$ docker run \
+    -it \
+    --rm \
+    -p 4444:4444 \
+    --net=host \
+    --name selenium-hub \
+    gigouni/hub-3.4.0-dysprosium
 ```
 
 #### 1.2.2.1. Basic run
@@ -57,25 +76,32 @@ $ docker run -it --rm -p 4444:4444 --name selenium-hub selenium/hub:3.4.0-dyspro
 Run your new Chrome image
 
 ```shell
-$ docker run -it --rm --link selenium-hub:hub gigouni/chrome
+$ docker run \
+    -it \
+    -e HUB_PORT_4444_TCP_ADDR=172.17.0.1 \
+    -e HUB_PORT_4444_TCP_PORT=4444 \
+    -e NODE_PORT=5557 \
+    gigouni/chrome_stable
 ```
 
 #### 1.2.2.2. Complete run
 
 ```shell
-$ docker run -it \
-    --rm \
+$ docker run \
+    -it \
+    -e HUB_PORT_4444_TCP_ADDR=172.17.0.1 \
+    -e HUB_PORT_4444_TCP_PORT=4444 \
+    -e NODE_PORT=5557 \
+    -e CHROME_VERSION=google-chrome-stable \
+    -e CHROME_DRIVER_VERSION=2.30 \
     -e NODE_MAX_INSTANCES=1 \
+    -e NODE_APPLICATION_NAME=node-chrome \
     -e NODE_MAX_SESSION=1 \
     -e NODE_REGISTER_CYCLE=5000 \
-    -e NODE_PORT=5555 \
-    --link selenium-hub:hub \
-    gigouni/chrome
+    -e NODE_POLLING=5000 \
+    -e NODE_UNREGISTER_IF_STILL_DOWN_AFTER=60000 \
+    -e NODE_DOWN_POLLING_LIMIT=2 \
+    gigouni/chrome_stable
 ```
 
-Check if it's working [here](http://localhost:4444/grid/console). Enjoy!
-
-_Note:_
-
-* The usage of the _link_ argument is deprecated. You shall think about edit it ASAP.
-* Here, _NODE_ stands for the Selenium _node_, not NodeJS.
+Check if it's working [here](http://localhost:4444/grid/console)
