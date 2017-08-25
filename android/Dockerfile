@@ -49,8 +49,8 @@ RUN apt-get -qqy update && \
 #===============
 # Set JAVA_HOME
 #===============
-ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre" \ 
-    PATH="$PATH:$JAVA_HOME/bin"
+ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
+ENV PATH="$PATH:$JAVA_HOME/bin"
 
 #=====================
 # Install Android SDK
@@ -76,7 +76,7 @@ ENV PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
 # Install latest nodejs, npm, appium
 #====================================
 ARG APPIUM_VERSION=1.6.5
-ARG CHROME_DRIVER_VERSION=2.9
+ARG CHROME_DRIVER_VERSION=2.28
 
 ENV APPIUM_VERSION=${APPIUM_VERSION} \
     CHROME_DRIVER_VERSION=${CHROME_DRIVER_VERSION}
