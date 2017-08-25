@@ -6,12 +6,12 @@ if [[ $1 ]]; then
     TIMEOUT=$1
 else
     # Default value
-    TIMEOUT=40000
+    TIMEOUT=60000
 fi
 
 echo "Starting the tests..."
 echo "Timeout value: $TIMEOUT"
 
-mocha --timeout $TIMEOUT tests_android.js
+mocha --timeout $TIMEOUT tests.js
 
 echo "Closing the tests"
