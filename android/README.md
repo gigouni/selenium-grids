@@ -7,16 +7,12 @@
     - [1.2. Getting started](#12-getting-started)
         - [1.2.1. Conveniences](#121-conveniences)
         - [1.2.2. Build](#122-build)
-            - [1.2.2.1. Basic build](#1221-basic-build)
-            - [1.2.2.2. Complete build](#1222-complete-build)
         - [1.2.3. Run](#123-run)
             - [1.2.3.1. Device emulated with AVD](#1231-device-emulated-with-avd)
                 - [1.2.3.1.1. Create an AVD](#12311-create-an-avd)
                 - [1.2.3.1.2. Run the AVD (and test its existence btw)](#12312-run-the-avd-and-test-its-existence-btw)
-                - [1.2.3.1.3. Get the UUID of the emulated device](#12313-get-the-uuid-of-the-emulated-device)
-            - [1.2.3.2. Device within Docker](#1232-device-within-docker)
-            - [1.2.3.3. Run without connection to the Selenium grid](#1233-run-without-connection-to-the-selenium-grid)
-            - [1.2.3.4. Run with connection to the Selenium grid](#1234-run-with-connection-to-the-selenium-grid)
+            - [1.2.3.2. Run without connection to the Selenium grid](#1232-run-without-connection-to-the-selenium-grid)
+            - [1.2.3.3. Run with connection to the Selenium grid](#1233-run-with-connection-to-the-selenium-grid)
         - [1.2.4. Tests](#124-tests)
             - [1.2.4.1. Settings](#1241-settings)
             - [1.2.4.2. Run them all](#1242-run-them-all)
@@ -31,13 +27,18 @@ connect to a Selenium grid using its IP address.
 1. Run the hub
 2. Run the device emulator
 3. Run the Appium server
-4. Configure the tests using the correct UUID
+4. Configure the tests settings
 5. Run the tests
 
 ```shell
 $ # Hub
-$ docker run -it -d --rm -p 4444:4444  --name my-selenium-hub selenium/hub:3.4.0-dysprosium
-$ xdg-open http://172.17.0.2:4444/grid/console &
+$ docker run \
+    -it \
+    --rm \
+    -p 4444:4444 \
+    --net=host \
+    --name selenium-hub \
+    gigouni/hub-3.4.0-dysprosium
 $
 $ # Download Android system images and create AVD
 $ echo no | sdkmanager "system-images;android-24;google_apis;x86"
@@ -47,16 +48,13 @@ $ avdmanager create avd \
     -f
 $
 $ # Device emulator
-$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 -gpu host
-$
-$ # Appium server
-$ ./build.sh
+$ $ANDROID_HOME/emulator/emulator -avd gigouni_android_devices_API24 [-gpu host]
 $
 $ # Run Appium server
 $ ./run.sh
 $
-$ # Run tests
-$ mocha --timeout 30000 ../src/tests_android.js
+$ # Run tests (comment web sections)
+$ ../src/tests.js
 ```
 
 ## 1.2. Getting started
@@ -76,21 +74,10 @@ at the end of our ~/.bashrc to simplify the commands. In case you're not able to
 
 ### 1.2.2. Build
 
-#### 1.2.2.1. Basic build
-
 ```shell
 $ docker build \
-    -t gigouni/appium-1.6.5 .
-```
-
-#### 1.2.2.2. Complete build
-
-```shell
-$ docker build \
-    --build-arg SDK_VERSION=25.2.3 \
-    --build-arg ANDROID_BUILD_TOOLS_VERSION=25.0.3 \
     --build-arg APPIUM_VERSION=1.6.5 \
-    --build-arg CHROME_DRIVER_VERSION=2.9 \
+    --build-arg CHROME_DRIVER_VERSION=2.28 \
     -t gigouni/appium-1.6.5 \
     .
 ```
@@ -202,7 +189,7 @@ to be sure that your device is working well. You should see something like
 
 ```shell
 $ List of devices attached
-emulator-5554	device
+emulator-5554 device
 ```
 
 __Possible issues:__
@@ -230,31 +217,7 @@ It seems to be due to the incompatibilities between the Host GPU and the emulate
 $ emulator -avd gigouni_android_devices_API24 -gpu host
 ```
 
-##### 1.2.3.1.3. Get the UUID of the emulated device
-
-Finally, that's now that your AVD is important. If we're considering using an emulated device without Docker, we have to search the UUID of our device directly from the host machine. To get it, we have to run the command 
-
-```shell
-$ ll /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
-```
-
-If _ll_ is not recognized as a command, your 'll' alias might not be set. Just use
-
-```shell
-$ ls -l /dev/disk/by-uuid | grep dm-1 | awk '{print $9}'
-```
-
-You can check the way it's handled in the _./generate_config.sh_ file.
-
-#### 1.2.3.2. Device within Docker
-
-The interest of Docker was to be able to whenever dispose of a ready Android device. It's an easy tool and improve the deployment process.
-
-But before continuing, you need to know that there are some cons passing by Docker for the device emulation. First of all, the emulated device is _emulated_. It means that it's already wrap within a virtual machine. The second argument is about data access. If we need to access data for the contained Appium server from the contained device, the Appium server won't be able to connect to the device (not the same "system environment").
-
-If you still want to test it, check [this README](./devices/README.md).
-
-#### 1.2.3.3. Run without connection to the Selenium grid
+#### 1.2.3.2. Run without connection to the Selenium grid
 
 ```shell
 $ docker run -it \
@@ -262,18 +225,18 @@ $ docker run -it \
     gigouni/appium-1.6.5
 ```
 
-#### 1.2.3.4. Run with connection to the Selenium grid
+#### 1.2.3.3. Run with connection to the Selenium grid
 
 ```shell
 $ docker run -it \
     --rm \
     -e CONNECT_TO_GRID=true \
     -e PLATFORM_NAME=Android \
-    -e APPIUM_HOST=10.0.2.15 \
+    -e APPIUM_HOST=0.0.0.0 \
     -e APPIUM_PORT=4723 \
-    -e SELENIUM_HOST=172.17.0.2 \
+    -e SELENIUM_HOST=172.17.0.1 \
     -e SELENIUM_PORT=4444 \
-    -e BROWSER_NAME=android \
+    -e BROWSER_NAME=Chrome \
     -e DEVICE_NAME=emulator-5554 \
     -e OS_VERSION=4.1.2 \
     -e MAX_INSTANCES=1 \
@@ -315,7 +278,7 @@ Each node has its own IP address but plugging to the hub is enough, the hub broa
 In my case, I just need to run the tests by running this command in the _src/_ folder.
 
 ```shell
-$ mocha --timeout 30000 tests_android.js
+$ ../src/run_tests.sh
 ```
 
 _Note:_
@@ -326,4 +289,14 @@ __Possible issues:__
 
 - An unknown server-side error occurred while processing the command. Original error: unknown error: Chrome version must be >= xx.y.z
 
-This error is something know and due to ChromeDriver compatibility. When running your device, check its Chrome version (_Run Chrome/Settings/About Chrome/Application version_). Either your get an updated version of Chrome either you choose another version of ChromeDriver when building your Docker image. Just follow [this link](https://github.com/appium/appium/blob/master/docs/en/advanced-concepts/chromedriver.md) to know which version corresponding to yours.
+This error is something know and due to ChromeDriver compatibility. When running your device, check its Chrome version (_Run Chrome/Settings/About Chrome/Application version_). Either your get an updated version of Chrome either you choose another version of ChromeDriver when building your Docker image. Just follow [this link](https://github.com/appium/appium/blob/master/docs/en/advanced-concepts/chromedriver.md) to know which version corresponding to yours. Or you can refer to these lines
+
+--> ["Supports Chrome" lines](https://chromedriver.storage.googleapis.com/2.30/notes.txt)
+
+- ChromeDriver v2.30 : Supports Chrome v58-60
+- ChromeDriver v2.29 : Supports Chrome v56-58
+- ChromeDriver v2.28 : Supports Chrome v55-57
+- ChromeDriver v2.27 : Supports Chrome v54-56
+- ChromeDriver v2.26 : Supports Chrome v53-55
+- ChromeDriver v2.25 : Supports Chrome v53-55
+- ChromeDriver v2.24 : Supports Chrome v52-54
