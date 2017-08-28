@@ -9,8 +9,9 @@
         - [1.2.2. Build](#122-build)
         - [1.2.3. Run](#123-run)
             - [1.2.3.1. Device emulated with AVD](#1231-device-emulated-with-avd)
-                - [1.2.3.1.1. Create an AVD](#12311-create-an-avd)
-                - [1.2.3.1.2. Run the AVD (and test its existence btw)](#12312-run-the-avd-and-test-its-existence-btw)
+                - [1.2.3.1.1. Installation of Android Studio binaries](#12311-installation-of-android-studio-binaries)
+                - [1.2.3.1.2. Create an AVD](#12312-create-an-avd)
+                - [1.2.3.1.3. Run the AVD (and test its existence btw)](#12313-run-the-avd-and-test-its-existence-btw)
             - [1.2.3.2. Run without connection to the Selenium grid](#1232-run-without-connection-to-the-selenium-grid)
             - [1.2.3.3. Run with connection to the Selenium grid](#1233-run-with-connection-to-the-selenium-grid)
         - [1.2.4. Tests](#124-tests)
@@ -88,7 +89,34 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 
 #### 1.2.3.1. Device emulated with AVD
 
-##### 1.2.3.1.1. Create an AVD
+##### 1.2.3.1.1. Installation of Android Studio binaries
+
+Before continuing, you'll need to have your $ANDROID_HOME set. This environment variable is bind to the android_studio path folder after its installation and permits to use the SDK Manager and the AVD Manager.
+
+To install it through CLI, use the script below.
+
+```shell
+# Define the SDK and binaries version
+SDK_VERSION=25.2.3
+ANDROID_BUILD_TOOLS_VERSION=25.0.3
+ANDROID_HOME="/opt/Android/Sdk"
+
+# Download the ZIP archive, unpack it and provide rights
+cd /opt
+wget -O tools.zip https://dl.google.com/android/repository/tools_r${SDK_VERSION}-linux.zip
+unzip tools.zip && rm tools.zip
+chmod a+x -R ${ANDROID_HOME}
+chown -R root:root ${ANDROID_HOME}
+
+# Update to the latest stable version
+echo y | android update sdk -a -u -t platform-tools,build-tools-${ANDROID_BUILD_TOOLS_VERSION}
+
+# Update PATH environment variable
+PATH=${PATH}:${ANDROID_HOME}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
+export PATH
+```
+
+##### 1.2.3.1.2. Create an AVD
 
 Here, creating an API 24 Android device. These operations can be quite long so don't be surprised for not having an instant response. Once done, you'll receive a _done_ output.
 
@@ -141,7 +169,7 @@ touch /home/gigouni/.android/repositories.cfg
 
 More info [here](https://askubuntu.com/questions/885658/android-sdk-repositories-cfg-could-not-be-loaded).
 
-##### 1.2.3.1.2. Run the AVD (and test its existence btw)
+##### 1.2.3.1.3. Run the AVD (and test its existence btw)
 
 One you've created AVDs, you are able to consult the exhaustive list of them all.
 
