@@ -93,28 +93,7 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 
 Before continuing, you'll need to have your $ANDROID_HOME set. This environment variable is bind to the android_studio path folder after its installation and permits to use the SDK Manager and the AVD Manager.
 
-To install it through CLI, use the script below.
-
-```shell
-# Define the SDK and binaries version
-SDK_VERSION=25.2.3
-ANDROID_BUILD_TOOLS_VERSION=25.0.3
-ANDROID_HOME="/opt/Android/Sdk"
-
-# Download the ZIP archive, unpack it and provide rights
-cd /opt
-wget -O tools.zip https://dl.google.com/android/repository/tools_r${SDK_VERSION}-linux.zip
-unzip tools.zip && rm tools.zip
-chmod a+x -R ${ANDROID_HOME}
-chown -R root:root ${ANDROID_HOME}
-
-# Update to the latest stable version
-echo y | android update sdk -a -u -t platform-tools,build-tools-${ANDROID_BUILD_TOOLS_VERSION}
-
-# Update PATH environment variable
-PATH=${PATH}:${ANDROID_HOME}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
-export PATH
-```
+To install it through CLI, __use the ./installAndroid.sh script__.
 
 ##### 1.2.3.1.2. Create an AVD
 
