@@ -93,7 +93,7 @@ To run correctly, the Appium server needs to be bind to (at least) one Android d
 
 Before continuing, you'll need to have your $ANDROID_HOME set. This environment variable is bind to the android_studio path folder after its installation and permits to use the SDK Manager and the AVD Manager.
 
-To install it through CLI, __use the ./installAndroid.sh script__.
+To install it through CLI, __use the [./installAndroid.sh](./installAndroid.sh) script__.
 
 ##### 1.2.3.1.2. Create an AVD
 
