@@ -1,12 +1,7 @@
 "use strict";
 
 const CONSTANTS = require('./constants');
-const PATH = require('path');
 let webdriver = require('selenium-webdriver');
-let By = require('selenium-webdriver').By;
-let until = require('selenium-webdriver').until;
-let Capabilities = require('selenium-webdriver').Capabilities;
-let Keys = require('selenium-webdriver').Key;
 let test = require('selenium-webdriver/testing');
 
 
@@ -16,7 +11,7 @@ let test = require('selenium-webdriver/testing');
 describe('Work with REMOTE URL', () => {
 
     // Capabilities
-    let android_capabilities = new Capabilities()
+    let android_capabilities = new webdriver.Capabilities()
         .set('browserName', 'Chrome')
         .set('platformName', 'Android')
         .set('deviceName', 'emulator-5554');
@@ -30,7 +25,7 @@ describe('Work with REMOTE URL', () => {
             .build();
 
         driver.get(CONSTANTS.GOOGLE_URL);
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(webdriver.until.titleIs(CONSTANTS.GOOGLE_TITLE));
 
         driver.quit();
         done();
@@ -44,7 +39,7 @@ describe('Work with REMOTE URL', () => {
             .build();
 
         driver.get(CONSTANTS.GOOGLE_URL);
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(webdriver.until.titleIs(CONSTANTS.GOOGLE_TITLE));
 
         // driver.quit() returns an error for Firefox since FF > 46
         // WebDriverError: quit
@@ -63,7 +58,7 @@ describe('Work with REMOTE URL', () => {
             .build();
 
         driver.get(CONSTANTS.GOOGLE_URL);
-        driver.wait(until.titleIs(CONSTANTS.GOOGLE_TITLE));
+        driver.wait(webdriver.until.titleIs(CONSTANTS.GOOGLE_TITLE));
 
         driver.quit();
         done();
